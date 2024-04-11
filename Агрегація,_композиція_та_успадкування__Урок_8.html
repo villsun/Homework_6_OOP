@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Агрегація, композиція та успадкування :: Урок 8</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+<link rel="manifest" href="/img/favicon/site.webmanifest">
+<link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<link href="https://materials.itstep.org/css/style.css?t=1692990999" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/monokai-sublime.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="header">
+<div class="content">
+<div class="menu-btn menu-btn--active"></div>
+<nav id="nav" class="d-flex flex-column flex-shrink-0 p-3 navbar"></nav>
+<p class="title">Агрегація, композиція та успадкування</p>
+</div>
+<img class="logo" src="/img/logo.svg">
+</header>
+<main class="page" style="background-color: #2FAA4F">
+<div class="wrap main-active">
+<p class="subject">Об&#039;єктно-орієнтоване програмування з використанням мови С++ </p>
+<div class="info-wrap">
+<div class="type" style="color:#2FAA4F;background-color: #2FAA4F30">Уроки</div>
+</div>
+<div class="image_wrap">
+<img class="cover_image" src="https://fsx1.itstep.org/api/v1/files/Po5mIuvqF9gD_gparolgNvho5XCMQMUP" alt>
+</div>
+<div class="fr-wrapper" data-codelang="cpp"><div><div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div><br>
+<h1 style="text-align: center;"><span style="color: rgb(47, 170, 79);">Агрегація, композиція&nbsp;</span><br>
+<span style="color: rgb(47, 170, 79);">і успадкування</span></h1>
+<p><br></p>
+<h2>1. Вкладений клас. Синтаксис оголошення</h2>
+<p style="text-align: justify;">В об'єктно-орієнтованому програмуванні (ООП) вкладений (внутрішній, <span style="color: rgb(147, 101, 184);">inner</span>, <span style="color: rgb(147, 101, 184);">nested</span>) клас &mdash; це клас, визначення якого повністю міститься всередині іншого класу. Клас, який містить усередині себе визначення іншого (вкладеного) класу, називається зовнішнім (об'ємним, охоплюючим, <span style="color: rgb(147, 101, 184);">enclosing</span>).</p>
+<p style="text-align: justify;">Вкладений клас є членом зовнішнього класу і тому має ті самі права доступу, що й будь-який інший член. Однією з основних особливостей під час роботи з вкла&shy;де&shy;ними класами є те, що об'єкт вкладеного класу завжди має бути прикріплений до об'єкта зовнішнього класу, тобто його самостійне існування (наприклад, як об'єкти звичайних класів) не має сенсу з точки зору логіки програми.</p>
+<p style="text-align: justify;">Трохи згодом розглянемо приклади цих нюансів під час роботи з об'єктами вкла&shy;дених класів, а зараз познайомимося із синтаксисом оголошення вкладеного класу.</p>
+<p style="text-align: justify;">Вкладений клас також є змінною &mdash; членом зовнішнього класу і має ті самі права доступу, що й інші члени. Отже, визначення вкладеного класу може знаходитися в будь-якому розділі (<span style="color: rgb(147, 101, 184);">private</span>, <span style="color: rgb(147, 101, 184);">public</span>, <span style="color: rgb(147, 101, 184);">protected</span>) зовнішнього класу.</p>
+<pre style="text-align: justify;" translate="no">/* початок визначення зовнішнього класу */
+class Enclosing {
+    private:
+        ………
+    public:
+        ………
+    /* початок визначення вкладеного класу */
+    class Inner {
+        private:
+            ………
+        public:
+            ………
+    }; // завершення визначення вкладеного класу
+}; // завершення визначення зовнішнього класу</pre>
+<p>Розглянемо докладніше на прикладі. Оголосимо клас <span style="color: rgb(147, 101, 184);">Inner&nbsp;</span>усередині оголошення класу <span style="color: rgb(147, 101, 184);">Enclosing</span>, яке знаходиться у файлі «<em>Enclosing.h</em>».</p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include &lt;iostream&gt;
+using namespace std;
+
+class Enclosing
+{
+    private:
+        int outerValue = 1;
+    public:
+        void displayOuterValue()
+        {
+            cout &lt;&lt; "outerValue = " &lt;&lt; outerValue;
+        }
+        class Inner
+        {
+            private:
+                int innerValue1 = 2;
+            public:
+                int innerValue2 = 3;
+                void displayInnerValues()
+                {
+                    cout &lt;&lt; "innerValue1 = " &lt;&lt; innerValue1 &lt;&lt; endl;
+                    cout &lt;&lt; "innerValue2 = " &lt;&lt; innerValue2 &lt;&lt; endl;
+                }
+        };
+};</pre>
+<p style="text-align: justify;">Зовнішній клас <span style="color: rgb(147, 101, 184);">Enclosing&nbsp;</span>містить одну закриту змінну &mdash; член класу <span style="color: rgb(147, 101, 184);">outerValue</span>, відкритий метод <span style="color: rgb(147, 101, 184);">displayOuterValue()</span> і відкритий вкладений клас <span style="color: rgb(147, 101, 184);">Inner</span>.</p>
+<p style="text-align: justify;">Вкладений клас <span style="color: rgb(147, 101, 184);">Inner&nbsp;</span>зі свого боку також містить <span style="color: rgb(147, 101, 184);">private&nbsp;</span>і <span style="color: rgb(147, 101, 184);">public&nbsp;</span>секції. Однак, у даному прикладі є тільки оголошення класів. Тепер для подальшої роботи нам пот&shy;рібно створити об'єкти (екземпляри цих класів).</p>
+<p style="text-align: justify;">Створення об'єкта класу <span style="color: rgb(147, 101, 184);">Enclosing&nbsp;</span>і подальша роботи з ним традиційні:</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+#include "Enclosing.h"
+
+using namespace std;
+int main()
+{
+    Enclosing encObj;
+    encObj.displayOuterValue();
+
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 177px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 167px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/ijZXELJtH8_JnN580hQq-ukQiQSqV9aI" alt="ijZXELJtH8_JnN580hQq-ukQiQSqV9aI" class="fr-dib fr-bordered" style="width: 167px;"><span class="fr-inner">Рисунок 1</span></span></span></span></p>
+<p style="text-align: justify;">Однак, через те, що вкладений клас існує лише в області видимості зовнішнього класу, ми не можемо створити об'єкт вкладеного класу за межами зовнішнього.</p>
+<p>Наприклад, така спроба створити об'єкт <span style="color: rgb(147, 101, 184);">inObj&nbsp;</span>викличе помилку:</p>
+<pre style="text-align: justify;" translate="no">int main()
+{
+    Enclosing encObj;
+    encObj.displayOuterValue();
+    Inner inObj;
+
+    return 0;
+}</pre>
+<p style="text-align: center;"><span style="width: 350px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 350px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/CNKJPlDUhvlw71uSXexZd_Onr075X-c0" alt="CNKJPlDUhvlw71uSXexZd_Onr075X-c0" class="fr-dib fr-bordered" style="width: 350px;"><span class="fr-inner">Рисунок 2</span></span></span></span></p>
+<p style="text-align: justify;">Тому оголошення змінної об'єкта вкладеного класу <span style="color: rgb(147, 101, 184);">inObj</span> повинно знаходитися всередині зовнішнього класу після його оголошення:</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        int outerValue = 1;
+    public:
+        void displayOuterValue()
+        {
+            cout &lt;&lt; "outerValue = " &lt;&lt; outerValue;
+        }
+        class Inner
+        {
+            private:
+                int innerValue1 = 2;
+            public:
+                int innerValue2 = 3;
+                void displayInnerValues()
+                {
+                    cout &lt;&lt; "innerValue1 = " &lt;&lt; innerValue1 &lt;&lt; endl;
+                    cout &lt;&lt; "innerValue2 = " &lt;&lt; innerValue2 &lt;&lt; endl;
+                }
+        };
+        Inner inObj;
+};</pre>
+<p style="text-align: justify;">Тепер дізнаємося, чи може внутрішній клас отримати доступ до властивості <span style="color: rgb(147, 101, 184);">outer&shy;Value&nbsp;</span>і методу<span style="color: rgb(147, 101, 184);">&nbsp;displayOuterValue()</span> зовнішнього класу.</p>
+<p style="text-align: justify;">Вкладений клас не має прав доступу до секції <span style="color: rgb(147, 101, 184);">private&nbsp;</span>зовнішнього класу, тому що особливості та сфера дії модифікаторів доступу поширюється і на вкладені класи також (змінні-члени з секції <span style="color: rgb(147, 101, 184);">private&nbsp;</span>доступні тільки для методів свого класу). Ми не можемо, наприклад, у методі вкладеного класу <span style="color: rgb(147, 101, 184);">displayInnerValues()</span> звернутися (отримати доступ до значення) до поля зовнішнього класу <span style="color: rgb(147, 101, 184);">outerValue</span>:</p>
+<pre style="text-align: justify;" translate="no">void displayInnerValues()
+{
+    cout &lt;&lt; "outerValue = " &lt;&lt; outerValue &lt;&lt; endl;
+}</pre>
+<p style="text-align: justify;">Однак, якщо ми передамо покажчик на зовнішній клас як параметр методу вкла&shy;деного класу, то такий підхід забезпечить нам доступ і до <span style="color: rgb(147, 101, 184);">private</span> змінних &mdash; членів зовнішнього класу:</p>
+<pre style="text-align: justify;" translate="no">void displayOuterValues(Enclosing *enc)
+{
+    cout &lt;&lt; "outerValue = " &lt;&lt; enc-&gt;outerValue &lt;&lt; endl;
+}
+
+int main()
+{
+    Enclosing encObj;
+    encObj.inObj.displayOuterValues(&amp;encObj);
+
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: left;"><span style="width: 177px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 177px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/gh6AF8QQ2QYuEvEBwMT9mXNKeIRmm0_6" alt="q7bTS8gxz6oRXUiqVPXdSxYIvoIx7UoP" class="fr-dib fr-bordered" style="width: 177px;"><span class="fr-inner">Рисунок 3</span></span></span></span></p>
+<p style="text-align: justify;">У цьому прикладі ми викликали метод <span style="color: rgb(147, 101, 184);">displayOuterValues()</span> вкладеного класу <span style="color: rgb(147, 101, 184);">Inner&nbsp;</span>через змінну-член <span style="color: rgb(147, 101, 184);">inObj</span>, яка є об'єктом цього ж вкладеного класу. Але це не єдиний спосіб. Оскільки оголошення вкладеного класу перебуває в <span style="color: rgb(147, 101, 184);">public&nbsp;</span>секції зовнішнього класу і вкладений клас є такою ж змінною &mdash; членом зовнішнього класу, що й інші члени, то ми можемо створити об'єкт вкладеного класу через зовнішній за допомогою оператора дозволу області видимості (<span style="color: rgb(147, 101, 184);">::</span>):</p>
+<pre style="text-align: justify;" translate="no">int main()
+{
+    Enclosing encObj;
+    Enclosing::Inner innerObj;
+    innerObj.displayOuterValues(&amp;encObj);
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 177px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 177px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/iIpcjTVdIiM57HdCx-1dL-rJCH4QwZGp" alt="AJM15lMHJoWXDEC3xjF6QRVkgw6c-uVR" class="fr-dib fr-bordered" style="width: 177px;"><span class="fr-inner">Рисунок 4</span></span></span></span></p>
+<p style="text-align: justify;">Отже, вкладений клас може бути використаний як тип не тільки всередині зовніш&shy;нього класу, а й за його межами. Однак, така методика використання вкладених класів не є рекомендованою та розповсюдженою, тому що основна мета створення вкладеного класу &mdash; це його використання тільки для потреб та задач зовнішнього класу. Детальніше цілі створення, призначення і застосування вкла&shy;дених класів ми розглянемо в наступному розділі уроку.</p>
+<p style="text-align: justify;">Тепер припустимо, що у разі визначенні (у тілі) вкладеного класу <span style="color: rgb(147, 101, 184);">Inner</span> ми надали тільки оголошення його методів:</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        int outerValue =1;
+    public:
+        void displayOuterValue()
+        {
+            cout &lt;&lt; "outerValue = " &lt;&lt; outerValue;
+        }
+        class Inner
+        {
+            private:
+                int innerValue1 = 2;
+            public:
+                int innerValue2 = 3;
+                void displayInnerValues();
+                void displayOuterValues(Enclosing* enc);
+       };
+       Inner inObj;
+};</pre>
+<p style="text-align: justify;">Для того, щоб визначити методи <span style="color: rgb(147, 101, 184);">displayInnerValues()</span> і <span style="color: rgb(147, 101, 184);">displayOuterValues(Enclosing* enc)</span> вкладеного класу <span style="color: rgb(147, 101, 184);">Inner</span> за його межами (і за межами зовнішнього класу), нам потрібно використати ім'я зовнішнього класу <span style="color: rgb(147, 101, 184);">Enclosing&nbsp;</span>і оператора дозволу області видимості (<span style="color: rgb(147, 101, 184);">::</span>):</p>
+<pre style="text-align: justify;" translate="no">void Enclosing::Inner::displayInnerValues()
+{
+    cout &lt;&lt; "innerValue1 = " &lt;&lt; innerValue1 &lt;&lt; endl;
+    cout &lt;&lt; "innerValue2 = " &lt;&lt; innerValue2 &lt;&lt; endl;
+}
+
+void Enclosing::Inner::displayOuterValues(Enclosing* enc)
+{
+    cout &lt;&lt; "outerValue = " &lt;&lt; enc-&gt;outerValue &lt;&lt; endl;
+}</pre>
+<p style="text-align: justify;">Варто зазначити, що незалежно від того, чи є змінні члени зовнішнього класу відкритими або закритими, звернення до них із методів вкладеного класу можливе тільки через посилання, як у цьому прикладі, або через покажчик.</p>
+<p style="text-align: justify;">Для вкладеного класу допустимі всі вже відомі нам види змінних членів класу: конструктор, покажчик на об'єкт того ж класу, дружні класи:</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    public:
+        class Inner
+        {
+            private:
+                int innerValue1;
+            public:
+                int innerValue2 = 3;
+                Inner* inPtr;
+                Inner(int value=2, Inner* ptr= nullptr) :innerValue1(value), inPtr(ptr){};
+                friend class Enclosing;
+                void displayInnerValues();
+        };
+         . . .
+};</pre>
+<p style="text-align: justify;">Оскільки зовнішній клас також не має доступу до елементів <span style="color: rgb(147, 101, 184);">private&nbsp;</span>секції вкла&shy;деного класу, ми можемо оголосити зовнішній клас як дружній усередині вкла&shy;де&shy;ного, щоб вирішити проблему доступу.</p>
+<p style="text-align: justify;">Тепер визначимо в тілі зовнішнього класу метод <span style="color: rgb(147, 101, 184);">displayPrivateInnerValue()</span>, який звертається до закритої змінної члена вкладеного класу:</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        int outerValue =1;
+    public:
+        void displayOuterValue()
+        {
+            cout &lt;&lt; "outerValue = " &lt;&lt; outerValue;
+        }
+        class Inner
+        {
+            private:
+                int innerValue1 = 2;
+            public:
+                friend class Enclosing;
+                int innerValue2 = 3;
+                void displayInnerValues();
+        };
+        Inner inObj;
+        void displayPrivateInnerValue()
+        {
+            cout &lt;&lt; "innerValue1 = " &lt;&lt; inObj.innerValue1;
+        }
+};</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 183px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 192px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/iU-wpoE70C86zFS5UijjqXz-kQsJAF72" alt="HD0vY6HG5NIVikMaDeobqk1JxESDd0oc" class="fr-dib fr-bordered" style="width: 192px;"><span class="fr-inner">Рисунок 5</span></span></span></span></p>
+<p style="text-align: justify;">Ми вже знаємо, що, використовуючи повне ім'я вкладеного класу й оператор дозволу області видимості (<span style="color: rgb(147, 101, 184);">::</span>), можна працювати із вкладеним класом у будь-якій області видимості (відмінній від області видимості зовнішнього класу).</p>
+<p style="text-align: justify;">Тому, щоб забезпечити використання вкладеного класу <span style="color: rgb(147, 101, 184);">Inner&nbsp;</span>тільки всередині зов&shy;ніш&shy;нього класу <span style="color: rgb(147, 101, 184);">Enclosing</span>, можна перенести оголошення класу <span style="color: rgb(147, 101, 184);">Inner</span> у <span style="color: rgb(147, 101, 184);">private&nbsp;</span>секцію його зовнішнього класу:</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        class Inner
+        {
+            private:
+                int innerValue1;
+            public:
+                int innerValue2 = 3;
+                Inner* inPtr;
+                Inner(int value = 2, Inner* ptr = nullptr) :innerValue1(value), inPtr(ptr) {};
+                void displayInnerValues();
+        };
+        public:
+        Inner inObj;
+};</pre>
+<p style="text-align: justify;">У цьому разі можливості створити об'єкт класу <span style="color: rgb(147, 101, 184);">Inner&nbsp;</span>за межами класу <span style="color: rgb(147, 101, 184);">Enclosing&nbsp;</span>не буде:</p>
+<pre style="text-align: justify;" translate="no">int main()
+{
+    Enclosing encObj;
+    Enclosing::Inner innerObj;
+    return 0;
+}</pre>
+<p style="text-align: justify;"><span style="width: 674px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/eGYeSjsYVR9qFxLFee3p4h46cD72PBkf" alt="eGYeSjsYVR9qFxLFee3p4h46cD72PBkf" class="fr-dib fr-bordered" style="width: 674px;"><span class="fr-inner">Рисунок 6</span></span></span></span></p>
+<p style="text-align: justify;">Тепер компоненти класу <span style="color: rgb(147, 101, 184);">Inner&nbsp;</span>доступні тільки всередині методів класу <span style="color: rgb(147, 101, 184);">Enclo&shy;sing&nbsp;</span>(наприклад, у методі <span style="color: rgb(147, 101, 184);">displayInnerValues()</span>) і для класів, які є дружніми для <span style="color: rgb(147, 101, 184);">Enclosing</span>.</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        class Inner
+        {
+            private:
+                int innerValue1;
+            public:
+                int innerValue2 = 3;
+                Inner* inPtr;
+                Inner(int value = 2, Inner* ptr = nullptr) :innerValue1(value), inPtr(ptr) {};
+        };
+    public:
+        Inner inObj;
+        void displayInnerValues()
+        {
+            cout &lt;&lt; "innerValue2 = " &lt;&lt; inObj.innerValue2;
+        }
+};</pre>
+<p style="text-align: justify;">Тепер у нас немає необхідності виділяти в класі <span style="color: rgb(147, 101, 184);">Inner private</span> секцію й оголошувати клас <span style="color: rgb(147, 101, 184);">Enclosing&nbsp;</span>дружнім для його доступу до закритих змінних-членів класу <span style="color: rgb(147, 101, 184);">Inner</span>. Можна зробити всі змінні-члени класу <span style="color: rgb(147, 101, 184);">Inner&nbsp;</span>відкритими:</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        class Inner
+        {
+            public:
+                int innerValue1;
+                int innerValue2 = 3;
+                Inner* inPtr;
+                Inner(int value = 2, Inner* ptr = nullptr) :innerValue1(value), inPtr(ptr) {};
+        };
+    public:
+        Inner inObj;
+        void displayInnerValues()
+        {
+            cout &lt;&lt; "innerValue2 = " &lt;&lt; inObj.innerValue2;
+        }
+};</pre>
+<p style="text-align: justify;">Також у ситуаціях, коли нам потрібно визначати методи вкладеного класу за його межами, слід пам'ятати, що методи вкладеного класу не є членами зовнішнього і, отже, не можуть бути визначені всередині нього.</p>
+<p style="text-align: justify;">Наприклад, спроба визначити метод <span style="color: rgb(147, 101, 184);">getSumValues()</span> за межами класу <span style="color: rgb(147, 101, 184);">Inner</span>, але всередині класу <span style="color: rgb(147, 101, 184);">Enclosing&nbsp;</span>призведе до помилок:</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        class Inner
+        {
+            public:
+                int innerValue1;
+                int innerValue2 = 3;
+                Inner* inPtr;
+                Inner(int value = 2, Inner* ptr = nullptr) :innerValue1(value), inPtr(ptr) {};
+                int getSumValues();
+        };
+        int Inner :: getSumValues()
+        {
+            return innerValue1 + innerValue2;
+        }
+        . . . . . . .
+}; // завершення визначення зовнішнього класу Enclosing</pre>
+<p style="text-align: center;"><span style="width: 674px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/eZghwv1ULLT4aV5z9dzrjC5se9upZWdz" alt="eZghwv1ULLT4aV5z9dzrjC5se9upZWdz" class="fr-dib fr-bordered" style="width: 674px;"><span class="fr-inner">Рисунок 7</span></span></span></span></p>
+<p style="text-align: justify;">Отже, визначення методів вкладеного класу за його межами має бути винесено за рамки зовнішнього класу.</p>
+<p style="text-align: justify;">Як і в попередніх прикладах, у цій ситуації слід використовувати повне ім'я вкла&shy;деного класу та оператор дозволу області видимості (<span style="color: rgb(147, 101, 184);">::</span>):</p>
+<pre style="text-align: justify;" translate="no">using namespace std;
+class Enclosing
+{
+    private:
+        class Inner
+        {
+            public:
+                int innerValue1;
+                int innerValue2 = 3;
+                Inner* inPtr;
+                Inner(int value = 2, Inner* ptr = nullptr) :innerValue1(value), inPtr(ptr) {};
+                int getSumValues();
+        };
+    public:
+        Inner inObj;
+        void displayInnerValues()
+        {
+            cout &lt;&lt; "innerValue1 = " &lt;&lt; inObj.innerValue1 &lt;&lt; endl;
+            cout &lt;&lt; "innerValue2 = " &lt;&lt; inObj.innerValue2 &lt;&lt; endl;
+            cout &lt;&lt; inObj.innerValue1 &lt;&lt; " + " &lt;&lt; inObj.innerValue2 &lt;&lt; " = " &lt;&lt; inObj.getSumValues() &lt;&lt; endl; 
+        }
+};
+
+int Enclosing::Inner::getSumValues()
+{
+    return innerValue1 + innerValue2;
+};
+int main()
+{
+    Enclosing encObj;
+    encObj.displayInnerValues();
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 195px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 195px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/WgaY88tkzKi3PGnQ9Bc_GnjX2uWJMGHp" alt="hbtRbLABOo3qReVOoVIQYbHvCBkor9Z0" class="fr-dib fr-bordered" style="width: 195px;"><span class="fr-inner">Рисунок 8</span></span></span></span></p>
+<p style="text-align: justify;">Така сама ситуація і зі статичними змінними-членами у вкладеному класі (ціло&shy;чисельна змінна <span style="color: rgb(147, 101, 184);">counter&nbsp;</span>у прикладі нижче): їхня ініціалізація має відбуватися в глобальній області видимості, тобто за рамками зовнішнього класу.</p>
+<pre style="text-align: justify;" translate="no">class Enclosing
+{
+    private:
+        class Inner
+        {
+            public:
+                static int counter;
+                int innerValue1;
+                int innerValue2 = 3;
+                Inner* inPtr;
+                Inner(int value = 2, Inner* ptr = nullptr) :innerValue1(value), inPtr(ptr) {};
+                int getSumValues();
+        };
+        public:
+            Inner inObj;
+            void displayInnerValues()
+            {
+                cout &lt;&lt; "innerValue1 = " &lt;&lt; inObj.innerValue1 &lt;&lt; endl;
+                cout &lt;&lt; "innerValue2 = " &lt;&lt; inObj.innerValue2 &lt;&lt; endl;
+                cout &lt;&lt; inObj.innerValue1 &lt;&lt; " + " &lt;&lt; inObj.innerValue2 &lt;&lt; " = " &lt;&lt; inObj.getSumValues() &lt;&lt; endl;
+            }
+};
+int Enclosing::Inner::counter = 0;
+int Enclosing::Inner::getSumValues()
+{
+    return innerValue1 + innerValue2;
+};</pre>
+<h3>1.1. Цілі та завдання вкладених класів. Приклади використання</h3>
+<p style="text-align: justify;">Як ми вже знаємо, основна мета створення вкладеного класу &mdash; це його використання тільки для потреб і завдань зовнішнього класу.</p>
+<p style="text-align: justify;">Можна сказати, що концепція вкладених класів &mdash; це спосіб логічного групування класів: якщо клас важливий тільки для одного іншого класу, то логічно вбудувати його в цей клас і зберегти їх разом. Вкладення таких «допоміжних класів» в основні дає змогу представити модельовану сутність у впорядкованішому вигляді.</p>
+<p style="text-align: justify;">Наприклад, якщо деяка частина методів класу має загальну логіку (розв'язує набір завдань, що належать до однієї категорії) і водночас здебільшого працює тільки з частиною змінних членів класу, то зручніше цю пов'язану бізнес-логіку (разом із потрібними їй змінними) подати у вигляді вкладеного класу.</p>
+<p style="text-align: justify;">Серед сутностей (об'єктів) предметної області можуть існувати різні взаємо&shy;зв'язки. Коли нам потрібно уявити відношення «ціле-частина», у якому «частина» не може існувати й використовуватися за межами «цілого» (або чимось, крім «цілого»), то застосування вкладених класів спростить створення такого типу відношення.</p>
+<p style="text-align: justify;">Внутрішні класи також можна використовувати для створення вкладених структур даних, таких, наприклад, як пов'язаний список (вузол списку буде внутрішнім класом, а сам список &mdash; зовнішнім).</p>
+<p style="text-align: justify;">Також використання вкладених класів (що було показано на попередніх прикладах) дає змогу забезпечити доступ із його методів до закритої секції зовнішнього класу, який ми передаємо через покажчик або посилання.</p>
+<p style="text-align: justify;">Розглянемо перераховані переваги використання вкладених класів на прикладах.</p>
+<p style="text-align: justify;">Уявімо, що нам необхідно розробити клас, який представляє автомобіль <span style="color: rgb(147, 101, 184);">Car</span>. З огляду на складність і масштабність такої системи, зручніше представити її набо&shy;ром підсистем, наприклад, двигун, коробка передач, автомобільний конди&shy;ціонер. Кожна з підсистем складається з компонентів, які належать тільки їй (деталі двигуна не є деталями коробки передач). У кожної з підсистем своя власна поведінка (набір методів), яка може використовуватися тільки зовнішнім класом.</p>
+<p style="text-align: justify;">Вміст файлу «<em>Car.h</em>»:</p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+class Car
+{
+    private:
+        string m_model;
+        int m_releaseYear;
+        class Engine
+        {
+            public:
+                bool m_isWorked;
+                int m_horsePower;
+                int m_Cylinders;
+                Engine(int horsePower, int Cylinders):
+                    m_horsePower(horsePower),
+                    m_Cylinders(Cylinders)
+                {
+                    m_isWorked = false;
+                }
+                void start()
+                {
+                    m_isWorked = true;
+                    cout &lt;&lt; "Engine running..." &lt;&lt; endl;
+                }
+        };
+        Engine* m_engine;
+        public:
+            Car(string model, int releaseYear, int horsePower, int Cylinders) :
+                m_model(model),
+                m_releaseYear(releaseYear)
+            {
+                m_engine = new Engine(horsePower, Cylinders);
+                cout &lt;&lt; "Car is ready!" &lt;&lt; endl;
+            }
+            void move()
+            {
+                m_engine-&gt;start();
+                cout &lt;&lt; "Let's go...." &lt;&lt; endl;
+            }
+            ~Car()
+            {
+                delete m_engine;
+            }
+};</pre>
+<p style="text-align: justify;">Припустимо, що в нашого автомобіля є назва моделі (<span style="color: rgb(147, 101, 184);">m_model</span>) і рік випуску (<span style="color: rgb(147, 101, 184);">m_releaseYear</span>), які представлені в класі закритими змінними-членами. Також обов'язковою частиною автомобіля є двигун, опис характеристик і поведінки якого знаходиться у вкладеному класі <span style="color: rgb(147, 101, 184);">Engine</span>. Клас <span style="color: rgb(147, 101, 184);">Car</span> є зовнішнім щодо класу <span style="color: rgb(147, 101, 184);">Engine</span>, тобто представляє «ціле», а клас <span style="color: rgb(147, 101, 184);">Engine&nbsp;</span>&mdash; «частину».</p>
+<p style="text-align: justify;">Характеристики двигуна є змінними-членами вкладеного класу <span style="color: rgb(147, 101, 184);">Engine</span>: <span style="color: rgb(147, 101, 184);">m_isWorked</span> (ознака чи працює двигун, чи ні), <span style="color: rgb(147, 101, 184);">m_horsePower&nbsp;</span>(потужність, обертів за хвилину), <span style="color: rgb(147, 101, 184);">m_nCylinders</span> (кількість циліндрів). Також двигун може почати працювати &mdash; ця можливість моделюється в методі <span style="color: rgb(147, 101, 184);">start()</span>.</p>
+<p style="text-align: justify;">Двигун не може (у стандартному режимі) працювати без автомобіля, а коли створюється автомобіль певної моделі, то для нього створюється і двигун. Ця особливість врахована розміщенням визначення класу <span style="color: rgb(147, 101, 184);">Engine</span> у закритій секції класу <span style="color: rgb(147, 101, 184);">Car</span>. Така реалізація заборонить створення і використання об'єкта двигуна окремо від об'єкта автомобіль.</p>
+<p style="text-align: justify;">Оскільки, обираючи модель автомобіля, покупець може вибрати цю модель з різними типами двигуна, то конструктор класу <span style="color: rgb(147, 101, 184);">Car&nbsp;</span>крім типу моделі та року випуску приймає також параметри двигуна.</p>
+<p style="text-align: justify;">А щоб показати, що рух автомобіля починається із запуску двигуна, у методі <span style="color: rgb(147, 101, 184);">move()</span> класу <span style="color: rgb(147, 101, 184);">Car&nbsp;</span>ми викликаємо метод <span style="color: rgb(147, 101, 184);">start()</span> класу <span style="color: rgb(147, 101, 184);">Engine</span>.</p>
+<p style="text-align: justify;">Основна програма:</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+#include "Car.h"
+
+using namespace std;
+int main()
+{
+    Car honda("Accord 9", 2012, 155, 4);
+    honda.move();
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 213px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 223px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/deL8cd07rkrre5uxE6UYKNX9ebvoE0-L" alt="9M4x3B18K04ShbN2UT2qV9oT7CCdwMrC" class="fr-dib fr-bordered" style="width: 223px;"><span class="fr-inner">Рисунок 9</span></span></span></span></p>
+<p style="text-align: justify;">Тепер розглянемо приклад реалізації односпрямованого зв'язного списку у вигляді зовнішнього класу <span style="color: rgb(147, 101, 184);">LinkedList</span>, у якому вузол представлений вкладеним класом <span style="color: rgb(147, 101, 184);">Node</span>. Реалізовано операції додавання вузла в кінець списку, видалення вузла із зазна&shy;ченої позиції та виведення даних з усіх вузлів.</p>
+<p style="text-align: justify;"><em>«LinkedList.h»:</em></p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include &lt;iostream&gt;
+
+using namespace std;
+class LinkedList
+{
+    private:
+        class Node
+        {
+            public:
+                int data;
+                Node* next;
+                Node()
+                {
+                    data = 0;
+                    next = nullptr;
+                }
+                Node(int data): data(data), next(nullptr)
+                {}
+        };
+        Node* head;
+        int listLen;
+    public:
+        LinkedList()
+        {
+            head = nullptr;
+            listLen = 0;
+            cout &lt;&lt; "Empty linked list is ready..." &lt;&lt; endl;
+        }
+        ~LinkedList()
+        {
+            while (head != nullptr)
+            {
+                delete Node(1);
+            }
+            cout &lt;&lt; "List is empty now!" &lt;&lt; endl;
+        }
+        void insert Node(int);
+        void deleteNode(int);
+        void printNodes();
+};</pre>
+<p style="text-align: justify;">«<em>LinkedList.cpp»:</em></p>
+<pre style="text-align: justify;" translate="no">#include "LinkedList.h"
+
+void LinkedList::insertNode(int data)
+{
+    Node* newNode = new Node(data);
+    listLen++;
+    if (head == nullptr)
+    {
+        head = newNode;
+    }
+    else
+    {
+        Node* temp = head;
+        while (temp-&gt;next != nullptr)
+        {
+            temp = temp-&gt;next;
+        }
+        temp-&gt;next = newNode;
+    }
+}
+
+void LinkedList::deleteNode(int index)
+{
+    Node* temp1 = head, * temp2 = nullptr;
+    if (head == nullptr)
+    {
+        cout &lt;&lt; "List empty." &lt;&lt; endl;
+    }
+    else
+    {
+        if (listLen &lt; index)
+        {
+            cout &lt;&lt;"Index out of range"&lt;&lt; endl;
+        }
+        else
+        {
+            if (index == 1)
+            {
+                head = head-&gt;next;
+                delete temp1;
+            }
+            else
+            {
+                while (index-- &gt; 1)
+                {
+                    temp2 = temp1;
+                    temp1 = temp1-&gt;next;
+                }
+                temp2-&gt;next = temp1-&gt;next;
+                delete temp1;
+            }
+        }
+    }
+}
+
+void LinkedList::printNodes()
+{
+    Node* temp = head;
+    if (head == nullptr)
+    {
+        cout &lt;&lt; "List empty" &lt;&lt; endl;
+    }
+    else
+    {
+        while (temp != nullptr)
+        {
+            cout &lt;&lt; temp-&gt;data &lt;&lt; " ";
+            temp = temp-&gt;next;
+        }
+    }
+}</pre>
+<p style="text-align: justify;">Основна програма:</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+#include "LinkedList.h"
+
+using namespace std;
+int main()
+{
+    LinkedList myList;
+    myList.insertNode(0);
+    myList.insertNode(1);
+    myList.insertNode(2);
+    cout &lt;&lt; "List elements: ";
+    myList.printNodes();
+    cout &lt;&lt; endl;
+    myList.deleteNode(1);
+    cout &lt;&lt; "List elements after deleting node at position 1: ";
+    myList.printNodes();
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 598px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 612px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/p2SoTFE0tgHg_aekxAGKU1z1kAIqPHf-" alt="urxGmGDBUdG3pq8_gaTD40yjKdVRgk4M" class="fr-dib fr-bordered" style="width: 612px;"><span class="fr-inner">Рисунок 10</span></span></span></span></p>
+<p style="text-align: justify;">Як ми помітили з прикладів, використання вкладених класів сприяє створенню більш упорядкованого коду для зовнішніх класів. Також факт наявності відношення «ціле-частина», в якому «частина» не повинна використовуватися за межами «цілого», стає більш очевидним і чітким.</p>
+<p style="text-align: justify;"><br></p>
+<h2 style="text-align: justify;">2. Агрегація та композиція</h2>
+<p style="text-align: justify;">Між об'єктами предметної області (задачі) можуть бути різні відношення, але біль&shy;шість із них (за змістом і з урахуванням особливостей відношень) можна роз&shy;бити на такі категорії:</p>
+<ul>
+<li style="text-align: justify;">відношення «є» (є різновидом);</li>
+<li style="text-align: justify;">відношення «має» (містить);</li>
+<li style="text-align: justify;">відношення «залежить від»;</li>
+<li style="text-align: justify;">відношення «використовує»;</li>
+<li style="text-align: justify;">відношення «частина-ціле».</li>
+</ul>
+<p style="text-align: justify;">Усі перелічені категорії відношень мають свої аналоги і в об'єктно-орієнтованому програмуванні.</p>
+<p style="text-align: justify;">Ми вже познайомилися з одним із варіантів реалізації відношення «частина-ціле» за допомогою вкладених класів. Зазначимо, що відношення «має» («містить») фактично являє собою дзеркальне відображення відношення «частина-ціле".</p>
+<p style="text-align: justify;">Однак, у ситуації, коли зовнішній клас має містити багато вкладених та/або їхні визначення потребують багато рядків коду, можна використовувати інші варіанти представлення відношення «частина-ціле», а саме агрегацію та композицію.</p>
+<p style="text-align: justify;">У реальних практичних задачах часто присутні складні об'єкти, які складаються з інших (в основному, простіших), а отже, є актуальним відношення «має» («містить»). У такому разі говорять про композицію.</p>
+<p style="text-align: justify;">Фактично, навіть коли ми просто визначаємо класи зі змінними-членами, то вже створюємо композицію &mdash; сутність, до складу якої входять інші (простіші) сутності (частини, елементи). Саме тому в програмуванні структури та класи належать до категорії складових типів даних.</p>
+<p style="text-align: justify;">Основна перевага використання композиції &mdash; це можливість створювати великі класи, представляючи їхню складну структуру у вигляді об'єднання простих частин. За такої структурної організації класу ним і його компонентами легко керувати. Також за необхідності внести зміни такий підхід дає змогу зробити це швидше та з меншою кількістю помилок (у нас буде повторне використання робочого коду, який уже було налагоджено та протестовано).</p>
+<p style="text-align: justify;">Існує два підвиди композиції (композиція та агрегація) залежно від того, чи може об'єкт-«частина» існувати (використовуватися) за межами об'єкта-«цілого». Роз&shy;гля&shy;немо ці нюанси докладніше.</p>
+<p style="text-align: justify;">Щоб не плутатися в термінах, надалі, говорячи про «ціле», вживатимемо термін «омпозиція об'єкта», а маючи <span style="color: rgb(63, 63, 64); font-family: Inter, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">на увазі підвид композиція &mdash;</span> термін «композиція».</p>
+<p style="text-align: justify;">З точки зору реалізації, композиція простіша за агрегацію, тому почнемо вивчення з її особливостей.</p>
+<h3>2.1. Поняття композиції</h3>
+<p style="text-align: justify;">Композиція являє собою тип відношення «має» (містить), тобто клас «ціле» містить «частину» (або «частини»).</p>
+<p style="text-align: justify;">Для того, щоб реалізувати відношення композиції, потрібно забезпечити такі особ&shy;ливості:</p>
+<ol>
+<li style="text-align: justify;">Об'єкт-частина входить до складу об'єкта-цілого.</li>
+<li style="text-align: justify;">Об'єкт-частина може входити до складу тільки одного об'єкта-цілого.</li>
+<li style="text-align: justify;">Об'єкт-частина не існує (не може функціонувати, використовуватися) без об'єкта-цілого, тобто об'єкт-ціле управляє об'єктом-частиною і несе відпо&shy;ві&shy;дальність за існування частин.</li>
+<li style="text-align: justify;">Об'єкт-частина не містить інформації про об'єкт-ціле.</li>
+</ol>
+<p style="text-align: justify;">Розглянемо ці особливості композиції на прикладах. Візьмемо приклад із класом автомобіль.</p>
+<p style="text-align: justify;">Двигун є частиною автомобіля. Один конкретний двигун в один момент часу може входити до складу тільки одного конкретного автомобіля.</p>
+<p style="text-align: justify;">Двигун не може повноцінно функціонувати окремо від автомобіля (двигун ство&shy;рюється під конкретний автомобіль або в момент створення конкретного авто&shy;мо&shy;біля). Автомобіль керує роботою двигуна (водій повертає ключ у замку запа&shy;лювання, що призводить до запуску двигуна).</p>
+<p style="text-align: justify;">У двигуні не міститься жодної інформації про те, в якому автомобілі його вико&shy;ристовують (а ось з боку автомобіля, під капотом, наприклад, можна побачити, який встановлений двигун).</p>
+<p style="text-align: justify;">Найпоширеніша сфера використання композиції &mdash; це моделювання ситуації, коли один об'єкт (частина) фізично знаходиться всередині іншого (цілого).</p>
+<p style="text-align: justify;">На окрему увагу заслуговує вимога «об'єкт-ціле несе відповідальність за існування частин». З точки зору програмування це означає, що об'єкт-частину створюють у момент створення об'єкта-ціле (тобто під час виклику конструктора класу, що представляє ціле) і вона має знищуватися, коли знищується ціле. Отже, ці моменти (створення/знищення частин цілого) не повинні бути реалізовані безпосередньо в клієнтському коді.</p>
+<p style="text-align: justify;">Щоб забезпечити перераховане, найпростіше для представлення частини в класі-цілому оголошується об'єкт (не покажчик) класу-частина. У цьому разі ми гаран&shy;товано забезпечуємо і створення об'єкта-частини в момент створення об'єкта-цілого, і його знищення при знищенні цілого.</p>
+<p style="text-align: justify;">Розглянемо всі перераховані особливості композиції в реалізації класу Зобра&shy;ження, у якого є назва, ширина, висота і положення на екрані (координати лівого верхнього кута зображення). При цьому положення на екрані буде окремим класом Точка. Клас Зображення є цілим, яке містить частину (об'єкт класу Точка).</p>
+<p><em>Файл «Point.h»</em></p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include &lt;iostream&gt;
+
+using namespace std;
+class Point {
+    private:
+        int m_x;
+        int m_y;
+    public:
+        Point(int x, int y) :m_x(x), m_y(y)
+        {
+            cout &lt;&lt; "Point (" &lt;&lt; m_x &lt;&lt; ", " &lt;&lt; m_y &lt;&lt; ") was created." &lt;&lt; endl;
+        }
+        ~Point()
+        {
+            cout &lt;&lt;"Point (" &lt;&lt; m_x &lt;&lt; ", " &lt;&lt; m_y &lt;&lt; ") was deleted." &lt;&lt; endl;
+        }
+        void change(int x, int y)
+        {
+            m_x = x;
+            m_y = y;
+        }
+};</pre>
+<p style="text-align: justify;">Ми створили конструктор і деструктор із виведенням інформаційного пові&shy;дом&shy;лення, щоб можна було чітко зрозуміти, в який саме момент створюється і знищується об'єкт-частина.</p>
+<p style="text-align: justify;">Також передбачено метод <span style="color: rgb(147, 101, 184);">change()</span>, який знадобиться для реалізації переміщення об'єкта-зображення (фактично зміни його положення, тобто значення полів об'єкта-частини Точка).</p>
+<p style="text-align: justify;">До складу класу Точка не входять жодні поля, що являють собою покажчик або посилання на об'єкт-зображення, тобто «об'єкт-частина не містить інформації про об'єкт-ціле».</p>
+<p><em>Файл Image.h</em></p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include &lt;cstring&gt;
+#include "Point.h"
+
+class Image
+{
+    private:
+        string m_imgTitle;
+        int m_width;
+        int m_height;
+        Point m_position;
+    public:
+        Image(string imgTitle, int width = 100, int height = 100, int x = 0, int y = 0):
+            m_imgTitle(imgTitle),
+            m_width(width),
+            m_height(height),
+            m_position(Point(x, y))
+        {
+            cout &lt;&lt; "Image '" &lt;&lt; m_imgTitle &lt;&lt; "' was created." &lt;&lt; endl;
+        }
+        ~Image()
+        {
+            cout &lt;&lt; "Image '" &lt;&lt; m_imgTitle &lt;&lt; "' was deleted." &lt;&lt; endl;
+        }
+        void moveTo(int x, int y)
+        {
+            cout &lt;&lt; "Image '" &lt;&lt; m_imgTitle &lt;&lt; "' was moved to point (" &lt;&lt; x &lt;&lt; ", " &lt;&lt; y &lt;&lt; ")." &lt;&lt; endl;
+            m_position.change(x, y);
+        }
+};</pre>
+<p style="text-align: justify;">У класі Зображення (<span style="color: rgb(147, 101, 184);">Image</span>), що представляє ціле, ми визначили змінну-член класу <span style="color: rgb(147, 101, 184);">m_position</span>, яка є об'єктом класу Точка (<span style="color: rgb(147, 101, 184);">Point</span>). Такий підхід гарантує виконання вимоги «об'єкт-частина може входити до складу тільки одного об'єкта-цілого», тому що в іншому об'єкті-зображенні буде абсолютно інший об'єкт-позиція.</p>
+<p style="text-align: justify;">Також у конструкторі з параметрами класу <span style="color: rgb(147, 101, 184);">Image&nbsp;</span>у списку ініціалізації є виклик конструктора класу <span style="color: rgb(147, 101, 184);">Point&nbsp;</span>для забезпечення особливості композиції «об'єкт-ціле несе відповідальність за існування частин».</p>
+<p>Основна програма (клієнтський код):</p>
+<pre style="text-align: justify;" translate="no">#include "Image.h"
+int main()
+{
+    Image img1("My image #1");
+    img1.moveTo(200, 200);
+    Image img2("My image #2", 50, 50, 120, 250);
+    img2.moveTo(500, 800);
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 588px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 612px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/4RRRh-JcL8NsUWrE_rQjsY47jwgVModD" alt="4XWzzcqWjkvB_6nDm2Q4Y7CowzArREAc" class="fr-dib fr-bordered" style="width: 612px;"><span class="fr-inner">Рисунок 11</span></span></span></span></p>
+<p style="text-align: justify;">Також відношення композиції можна реалізувати і за допомогою вкладених класів. Якщо ми реалізуємо клас Точка як вкладений у клас Зображення, то зможемо гарантувати, що наш об'єкт-частину (позиція, об'єкт класу Точка) не можна буде створити та використовувати (викликати метод <span style="color: rgb(147, 101, 184);">change()</span>) за межами класу Зобра&shy;ження.</p>
+<h3 style="text-align: justify;">2.2. Поняття агрегації</h3>
+<p style="text-align: justify;">Як і композиція, агрегація також являє собою тип відношення «має» (містить), тобто клас «ціле» містить «частину» (або «частини»), але водночас правила ство&shy;рен&shy;ня та використання об'єкта-частини є менш суворими:</p>
+<ol>
+<li style="text-align: justify;">Об'єкт-частина входить до складу об'єкта-цілого.</li>
+<li style="text-align: justify;">Об'єкт-частина може належати (входити до складу) більш ніж одному об'єкту-цілому.</li>
+<li style="text-align: justify;">Об'єкт-частина може існувати (може функціонувати, використовуватися) не&shy;конт&shy;рольована об'єктом-цілим.</li>
+<li style="text-align: justify;">Об'єкт-частина не містить інформації про об'єкт-ціле.</li>
+</ol>
+<p style="text-align: justify;">Як бачимо, відмінності агрегації від композиції наведені у пунктах два і три. Тобто при агрегації частини можуть належати довільній кількості об'єктів-цілих, які не керують існуванням, функціонуванням і тривалістю життя об'єктів-частин (нап&shy;риклад, частина «Адреса» входить до складу двох цілих: «Студент» і «Працівник»).</p>
+</div>
+<p style="text-align: center;"><span style="width: 674px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/J9Bb9NVgqZpAu8gMbbXjO-x2EayjOCz2" alt="J9Bb9NVgqZpAu8gMbbXjO-x2EayjOCz2" class="fr-dib fr-bordered" style="width: 674px;"><span class="fr-inner">Рисунок 12</span></span></span></span></p>
+<p style="text-align: justify;">Для забезпечення цих вимог (у разі додаванні частин у клас-ціле) потрібно замість об'єктів класу-частини використовувати у змінних-членах класу-цілого посилання або покажчики на клас-частину. При цьому об'єкти класу-частини, на які вказу&shy;ватимуть або посилатимуться змінні-члени класу-цілого, мають бути вже створені до моменту їхнього використання і за межами класу-цілого.</p>
+<p style="text-align: justify;">Найзручніше реалізувати цю особливість, передавши частини (покажчик або поси&shy;лання) як параметр конструктора класу-цілого, адже при агрегації ціле приймає готову частину, а не створює її.</p>
+<p style="text-align: justify;">Розглянемо приклад. Спочатку створимо клас-частину:</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+using namespace std;
+
+class ClassPart {
+    private:
+        int m_value;
+    public:
+        ClassPart(int value) :
+            m_value(value)
+        {
+            cout &lt;&lt; "Part with value " &lt;&lt; m_value &lt;&lt; " was created" &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">Тепер створимо клас-ціле зі змінною-членом, що є покажчиком на клас-частину і конструктором, який приймає як параметр покажчик на вже створений за межами класу-цілого об'єкт-частину:</p>
+<pre style="text-align: justify;" translate="no">#include "ClassPart.h"
+
+class ClassWhole
+{
+    private:
+        ClassPart* m_part;
+    public:
+        ClassWhole(ClassPart* part = nullptr) :
+            m_part(part)
+        {
+            cout &lt;&lt; "Whole was created.";
+            if (m_part)
+            {
+                cout &lt;&lt; "And Part in it." &lt;&lt; endl;
+            }
+            else
+            {
+                cout &lt;&lt; "Part is absent." &lt;&lt; endl;
+            }
+        }
+};</pre>
+<p style="text-align: justify;">В основній програмі створимо два об'єкти класу-ціле без частини та з нею. Для другого випадку попередньо створимо об'єкт-частину і покажчик на нього.</p>
+<pre style="text-align: justify;" translate="no">#include "ClassWhole.h"
+
+int main()
+{
+    ClassWhole whole1 = ClassWhole();
+    ClassPart* myPart = new ClassPart(10);
+    ClassWhole whole2(myPart);
+    delete myPart;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 388px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 412px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/ows0YCuE5bL9UFo0y-6BrXNwuxO91gcL" alt="fTwElX0URTuf79Nuc1Gigw4cLkLJo4Fy" class="fr-dib fr-bordered" style="width: 412px;"><span class="fr-inner">Рисунок 13</span></span></span></span></p>
+<p style="text-align: justify;">Зверніть увагу, що об'єкт-ціле не відповідає ні за створення об'єкта-частини, ні за його знищення. Тому нам необхідно окремо контролювати видалення об'єктів-частин, коли це необхідно.</p>
+<p style="text-align: justify;">Розглянемо ще один приклад, що демонструє особливості реалізації відношення агрегації між об'єктами. Припустімо, що нам необхідно створити клас Студент, який окрім прізвища, віку та середнього бала студента має зберігати й обробляти інформацію про його адресу проживання. Адреса являє собою набір даних про назву міста, назву вулиці, номери будинку і квартири.</p>
+<p style="text-align: justify;">Конкретна адреса існує незалежно від людей, які проживають за нею:</p>
+<ul>
+<li style="text-align: justify;">проживає хтось там зараз чи ні &mdash; адреса є;</li>
+<li style="text-align: justify;">чи живе там студент, чи мешканець не є студентом &mdash; адреса все одно є.</li>
+</ul>
+<p style="text-align: justify;">Отже, відношення між сутностями Студент і Адреса &mdash; це агрегація, в якій об'єкт Студент є об'єктом-цілим, а об'єкт Адреса &mdash; об'єктом-частиною.</p>
+<p style="text-align: justify;">Спочатку створимо клас Адреса:</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+class Adress
+{
+    private:
+        string m_city;
+        string m_street;
+        int m_house;
+        int m_apartment;
+    public:
+        Adress(string city, string street, int house, int apartment=0):
+            m_city(city),
+            m_street(street),
+            m_house(house),
+            m_apartment(apartment)
+        {}
+        void print() const
+        {
+            cout &lt;&lt; "City: " &lt;&lt; m_city &lt;&lt; "; " &lt;&lt; m_street &lt;&lt; " St. " &lt;&lt; m_house;
+            if (m_apartment != 0)
+            {
+                cout &lt;&lt; " / " &lt;&lt; m_apartment;
+            }
+            cout &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">Тепер створимо клас Студент, у якому міститиметься посилання на об'єкт класу Адреса.</p>
+<pre style="text-align: justify;" translate="no">#include "Adress.h"
+
+class Student {
+    private:
+        string m_firstName;
+        string m_lastName;
+        int m_age;
+        float m_meanScore;
+        Adress &amp;m_adress;
+    public:
+        Student(string firstName, string lastName, intage, float meanScore, Adress&amp; adress):
+            m_firstName(firstName),
+            m_lastName(lastName),
+            m_age(age),
+            m_meanScore(meanScore),
+            m_adress(adress)
+        {}
+        void print() const
+        {
+            cout &lt;&lt; "Hello! My name is " &lt;&lt; m_firstName &lt;&lt; " " &lt;&lt; m_lastName &lt;&lt; endl;
+            cout &lt;&lt; "I'm " &lt;&lt; m_age &lt;&lt; "years old." &lt;&lt; endl;
+            cout &lt;&lt; "My adress: ";
+            m_adress.printAdress();
+        }
+};</pre>
+<p style="text-align: justify;">В основній програмі створимо спочатку об'єкт-частину Адреса, продемонструємо його працездатність без класу Студент. Далі створимо об'єкт-ціле Студент і передамо його конструктору (як параметр) уже наявний об'єкт-частину Адреса:</p>
+<pre style="text-align: justify;" translate="no">#include "Student.h"
+
+int main()
+{
+    Adress adr("Seattle", "20th", 100);
+    cout &lt;&lt; "Adress 1:" &lt;&lt; endl;
+    adr.printAdress();
+    Student st("Anna", "Smith", 20, 95.7, adr1);
+    cout &lt;&lt; "Student 1:" &lt;&lt; endl;
+    st.printStudInfo();
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 439px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 449px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/OGSMwLIJY9dUmNDsYymJE0_5BdVCl6R3" alt="F81GQIgiwVdpTDSC-YyGIyRuIgX0APUG" class="fr-dib fr-bordered" style="width: 449px;"><span class="fr-inner">Рисунок 14</span></span></span></span></p>
+<p style="text-align: justify;"><br></p>
+<h2 style="text-align: justify;">3. Успадкування</h2>
+<h3 style="text-align: left;"><strong>3.1. Цілі та завдання успадкування. Приклади використання успадкування в навколишньому середовищі. Поняття базового та дочірнього класу</strong></h3>
+<p style="text-align: justify;">Як ми вже знаємо, успадкування є одним з основних принципів (так званих стовпів) об'єктно-орієнтованої (ОО) парадигми.</p>
+<p style="text-align: justify;"><strong>Успадкування&nbsp;</strong>&mdash; це можливість використовувати дані та функціональність чогось уже наявного для створення нового (на цій наявній основі).</p>
+<p style="text-align: justify;">У контексті об'єктно-орієнтованого програмування (ООП) успадкування &mdash; це здат&shy;ність одного класу отримувати (тобто успадковувати) властивості (змінні-члени) і поведінку (методи) іншого класу. Тут, звісно ж, діють певні обмеження доступу, пов'язані з тим, у якій із секцій (<span style="color: rgb(147, 101, 184);">public</span>, <span style="color: rgb(147, 101, 184);">private</span>, <span style="color: rgb(147, 101, 184);">protected</span>) перебуває змінна-член або метод. Більш докладно особливості обмеження доступу та впливу моди&shy;фіка&shy;торів доступу на процес успадкування ми розглянемо трохи пізніше.</p>
+<p style="text-align: justify;">Можна сказати, що успадкування є основним механізмом повторного використання коду в ОО-парадигмі.</p>
+<p style="text-align: justify;">Спадкування в C++ забезпечує реалізацію типу відносин між об'єктами «є».</p>
+<p style="text-align: justify;">У цьому механізмі у нас завжди є базовий клас і похідний клас (або кілька таких похідних класів).</p>
+<p style="text-align: justify;"><strong>Базовий (батьківський) клас</strong> &mdash; це клас, властивості та поведінка якого успад&shy;ко&shy;вуються.</p>
+<p style="text-align: justify;"><strong>Похідний (дочірній) клас</strong> &mdash; це клас, який успадковує властивості іншого класу, розширюючи його функціональність та/або характеристики.</p>
+<p style="text-align: justify;">Уявімо, що ми працівники цеху з виробництва посуду. Наш цех виробляє стандартні порцелянові білі чашки, які добре себе зарекомендували у покупців (ресторани, кафе тощо).</p>
+<p style="text-align: center;"><span style="width: 275px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 312px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/EZkxez2ogQ6am_IpJpsLYQ2bZ7p4804s" alt="ibDgHYrsaRbqVTwdhcunJJfQScE_wclU" class="fr-dib fr-bordered" style="width: 312px;"><span class="fr-inner">Рисунок 15</span></span></span></span></p>
+<p style="text-align: justify;">Аж от ми отримали замовлення від нового клієнта-готелю на випуск білих чашок, але з логотипом готелю у вигляді кольорового малюнка на зовнішній стороні чашки.</p>
+<p style="text-align: center;"><span style="width: 283px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 312px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/1gx8NEWXKdwtkVzqmeq4Io-XHgj-LEZM" alt="D4TGTNSXueKR1DcDEe5fiXnNmzoQfAgC" class="fr-dib fr-bordered" style="width: 312px;"><span class="fr-inner">Рисунок 16</span></span></span></span></p>
+<p style="text-align: justify;">Найкращим рішенням у цій ситуації буде використання моделі стандартної білої чашки як основи. Адже саме ця стандартна модель користується популярністю у багатьох клієнтів.</p>
+<p style="text-align: justify;">До того ж наше обладнання вже повністю налаштоване на випуск таких стан&shy;дарт&shy;них білих чашок. Після виготовлення стандартної чашки ми додамо малюнок кольорового логотипу, а отже, наша модифікація матиме більшу частину власти&shy;востей від колишньої моделі.</p>
+<p style="text-align: center;"><img src="https://fsx1.itstep.org/api/v1/files/4MmttagMUNvdGwfQgAuCVQIIRZMOHKJl" class="fr-fic fr-dib fr-bordered"></p>
+<p style="text-align: center;"><span style="color: rgb(184, 184, 186); font-size: 14px;">Рисунок 17</span></p>
+<p style="text-align: justify;">У цьому прикладі стандартна біла чашка є базовим класом, а біла чашка з кольоровим логотипом готелю &mdash; похідним класом, який успадковує всі характеристики батьківського класу і додає нову властивість, а саме логотип готелю у вигляді кольорового малюнка на зовнішній стороні чашки.</p>
+<p style="text-align: justify;">Розглянемо ще один приклад успадкування.</p>
+<p style="text-align: justify;">Уявімо, що нам необхідно розробити такі типи транспортних засобів, як автобус, вантажівка і автомобіль-седан. Кожен із перелічених автомобілів має чотири колеса, кермо, педаль газу. Кожен автомобіль надає можливості (функ&shy;ціо&shy;наль&shy;ність) перегляду витрат палива, гальмування, повороту передніх коліс відповідно до положення керма.</p>
+<p style="text-align: justify;">Якщо нам необхідно виконати програмну реалізацію всіх перерахованих власти&shy;востей і поведінки цих транспортних засобів, то доведеться написати всі ці функції в кожному з трьох класів. Представимо це такою схемою:</p>
+<p style="text-align: center;"><span style="width: 676px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/NXTO6SO2ILXtKwVF7Mb39whSVFlV5S2c" alt="NXTO6SO2ILXtKwVF7Mb39whSVFlV5S2c" class="fr-dib fr-bordered" style="width: 674px;"><span class="fr-inner">Рисунок 18</span></span></span></span></p>
+<p style="text-align: justify;">Як бачимо, нам фактично потрібно виконати дублювання коду тричі. Крім проблеми дублювання коду (надмірності даних) також збільшується ймовірність помилок під час реалізації.</p>
+<p style="text-align: justify;">Тепер подивимося як механізм успадкування дасть змогу уникнути подібної ситуації.</p>
+<p style="text-align: justify;">Спочатку створимо базовий клас <span style="color: rgb(147, 101, 184);">Vehicle</span> (<em>Транспортний засіб</em>), який має характе&shy;ристики «колеса», «кермо», «двигун» і перераховані три функції (поведінку). Інші класи <span style="color: rgb(147, 101, 184);">Bus&nbsp;</span>(<em>Автобус</em>), <span style="color: rgb(147, 101, 184);">Truck&nbsp;</span>(<em>Вантажівка</em>), <span style="color: rgb(147, 101, 184);">Sedan</span> (<em>Седан</em>) успадкуємо від класу Транс&shy;портний засіб.</p>
+<p style="text-align: center;"><span style="width: 547px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 637px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/9D88D3yl3Rdy2RpepIoh1QWctT858_tU" alt="9D88D3yl3Rdy2RpepIoh1QWctT858_tU" class="fr-dib fr-bordered" style="width: 637px;"><span class="fr-inner">Рисунок 19</span></span></span></span></p>
+<p style="text-align: justify;">Легко помітити, що ми можемо уникнути дублювання даних і підвищити можливість повторного використання.</p>
+<p style="text-align: justify;">Оскільки дочірні класи є повноцінними класами, вони можуть мати і свої власні змінні-члени, і методи, що відрізняють їх від базового класу. Наприклад, клас <span style="color: rgb(147, 101, 184);">Bus</span> (<em>Автобус</em>) &mdash; це не просто копія класу <span style="color: rgb(147, 101, 184);">Vehicle</span> (<em>Транспортний засіб</em>). У класу <span style="color: rgb(147, 101, 184);">Bus&nbsp;</span>(<em>Автобус</em>) можуть бути такі змінні-члени як, наприклад, кількість посадкових місць, поручні (за які можуть триматися пасажири під час руху автобуса), компостери тощо. Також клас <span style="color: rgb(147, 101, 184);">Bus&nbsp;</span>(<em>Автобус</em>) може мати власні методи типу ОголошенняНазви&shy;Зупинки() тощо.</p>
+<h3>3.2. Одиночне успадкування. Синтаксис одиночного успадкування</h3>
+<p style="text-align: justify;">Як нам уже відомо, у разі одиночного успадкування похідний клас успадковує (дозволені для успадкування) властивості та методи тільки одного базового класу.</p>
+<p style="text-align: justify;">Загальний синтаксис одиночного успадкування:</p>
+<pre style="text-align: justify;" translate="no">class ChildClassName : типСпецифікатораУспадкування ParentClassName
+{
+    // опис похідного класу
+}</pre>
+<p style="text-align: justify;">Щоб створити відношення успадкування між класами (створити новий похідний клас на основі вже наявного) після назви похідного класу <span style="color: rgb(147, 101, 184);">ChildClassName</span> ставиться двокрапка.</p>
+<p style="text-align: justify;">Далі вказується типСпецифікатораНаспадкування: <span style="color: rgb(147, 101, 184);">public</span>, <span style="color: rgb(147, 101, 184);">private</span>, <span style="color: rgb(147, 101, 184);">protected</span>. Як бачимо, можливі значення специфікатора успадкування збігаються з уже відомими нам модифікаторами доступу. Цим ми задаємо рівень доступу до компонентів базового класу, тобто як їх можна буде використовувати в похідному класі.</p>
+<p style="text-align: justify;">Якщо ми не вкажемо тип для специфікатора успадкування, то похідному класу нічого не буде відомо про змінні-члени і методи базового класу, оскільки за замовчуванням тип специфікатора успадкування &mdash; <span style="color: rgb(147, 101, 184);">private</span>. Який конкретно рівень доступу і для яких секцій базового класу вони забезпечують з'ясуємо згодом.</p>
+<p style="text-align: justify;">Далі вказується ім'я базового класу <span style="color: rgb(147, 101, 184);">ParentClassName</span>, тобто класу, від якого ми хочемо успадкувати дані та функціональність.</p>
+<p style="text-align: justify;">Будь-який клас може бути батьківським класом, тому синтаксис створення батьківського класу аналогічний створенню будь-якого іншого.</p>
+<p style="text-align: justify;">Створимо базовий клас Людина, у якого є такі властивості як ім'я, прізвище, вік. Також визначимо в ньому два методи: «Привітатися», який виводить повідомлення «Привіт! Мене звати [ім'я]» і метод «Показати інформацію», який виводить усю інформацію (ім'я, прізвище, вік) про конкретну людину.</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+#include &lt;format&gt;
+#include &lt;string&gt;
+
+using namespace std;
+class Person
+{
+    private:
+        string m_firstName;
+        string m_lastName;
+        int m_age;
+    public:
+        Person(string firstName = "", string lastName = "", intage = 0):
+            m_firstName(firstName),
+            m_lastName(lastName),
+            m_age(age)
+        {};
+        string getInfo() const
+        {
+            string result = = format("Person first name - {}; last name - {}; age - {}. \n", m_firstName, m_lastName, to_string(m_age));
+            return result;
+        };
+        string getGreetings(str ingmsgText = "") const
+        {
+            string result = "I am " + m_firstName;
+            if (!msgText.empty())
+            {
+                result += ". I say: ";
+                result += msgText;
+            }
+            else
+            {
+                result += ". I say nothing.";
+            }
+            return result;
+        }
+};</pre>
+<p style="text-align: justify;">У методі<span style="color: rgb(147, 101, 184);">&nbsp;getInfo()&nbsp;</span>ми використовували метод<span style="color: rgb(147, 101, 184);">&nbsp;format()</span>, який дає змогу заповнити рядок шаблону необхідною інформацією (у нашому прикладі &mdash; вставити в готовий шаблон для виведення інформаційного повідомлення значення полів <span style="color: rgb(147, 101, 184);">m_firstName</span>, <span style="color: rgb(147, 101, 184);">m_lastName&nbsp;</span>і <span style="color: rgb(147, 101, 184);">m_age</span>). Для використання методу <span style="color: rgb(147, 101, 184);">format()</span> необхідно:</p>
+<ul>
+<li style="text-align: justify;">підключити бібліотеку <span style="color: rgb(147, 101, 184);">&lt;format&gt;</span> (<span style="color: rgb(147, 101, 184);">#include&lt;format&gt;</span>);</li>
+<li>у налаштуваннях проєкту змінити стандарт мови С++ на С++ 20 версії.</li>
+</ul>
+</div>
+<p style="text-align: justify;"><span style="width: 674px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/gVbC8s2rcBdmgZk_ohZHCfjaf9BBlDAU" alt="gVbC8s2rcBdmgZk_ohZHCfjaf9BBlDAU" class="fr-dib fr-bordered" style="width: 674px;"><span class="fr-inner">Рисунок 20</span></span></span></span></p>
+<p style="text-align: justify;">Тепер створимо об'єкт (екземпляр класу <span style="color: rgb(147, 101, 184);">Person</span>) і запустимо його методи <span style="color: rgb(147, 101, 184);">getInfo()</span> і <span style="color: rgb(147, 101, 184);">getHi()</span>:</p>
+<pre style="text-align: justify;" translate="no">#include "Person.h"
+int main()
+{
+    Person obj("Anna", "Smith", 25);
+    cout &lt;&lt; obj.getInfo() &lt;&lt; endl;
+    cout &lt;&lt; obj.getGreetings("Hi") &lt;&lt; endl;
+    cout &lt;&lt; obj.getGreetings() &lt;&lt; endl;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 645px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 645px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/SjEnssGAOy0FLPGVWXo0dvIhC4daPlTm" alt="8tlfRDl3lq4k2PeIgAuU6EYPgiTArG8e" class="fr-dib fr-bordered" style="width: 645px;"><span class="fr-inner">Рисунок 21</span></span></span></span></p>
+<p style="text-align: justify;">Припустимо, що нам потрібно написати програму, яка визначатиме, чи є студент успішним на основі його середнього бала під час навчання на певній спеціальності. Ми можемо зберігати назву спеціальності та середній бал студента в класі Студент.</p>
+<p style="text-align: justify;">Нам також може знадобиться інформація про ім'я та вік студента. Зберігання такої інформації в нас уже реалізовано у класі Людина. Однак, копіювати відповідні рядки коду з класу Людина і потім вставляти їх у клас Студент, не найкраще рішення (отримаємо ситуацію з дублюванням коду).</p>
+<p style="text-align: justify;">Можна, звісно, додати клас Людина як змінну-член у клас Студент для реалізації композиції. Однак, у цій задачі використання відношення «частина-ціле», де Людина є частиною Студента є некоректним (з погляду особливості предметної області).</p>
+<p style="text-align: justify;">Зручнішим (особливо за умови майбутньої або можливої зміни, масштабування коду класу Людина) буде використання успадкування, яке відображає тип відношення «є». Студент є Людиною &mdash; усе коректно.</p>
+<p style="text-align: justify;">На основі нашого (базового) класу <span style="color: rgb(147, 101, 184);">Person&nbsp;</span>(Людина) створимо дочірній клас <span style="color: rgb(147, 101, 184);">Student</span> (Студент), який успадковує (набуває) методи і змінні-члени класу <span style="color: rgb(147, 101, 184);">Person</span>.</p>
+<p style="text-align: justify;">Крім цього, у класу <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>буде ще й власна властивість «спеціальність» і власний метод, що визначає за середнім балом (параметр методу), чи є студент успішним.</p>
+<pre style="text-align: justify;" translate="no">#include "Person.h"
+
+class Student: public Person
+{
+    private:
+        string m_spec;
+        double m_meanScore;
+    public:
+        Student(double meanScore, string spec = "Computer Science") :
+            m_spec(spec),
+            m_meanScore(meanScore)
+        {};
+        bool isSuccessful() const
+        {
+            if (m_meanScore &gt;= 75)
+            {
+                return true;
+            }
+                return false;
+        }
+};</pre>
+<p style="text-align: justify;">Для того, щоб клас <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>успадкував інформацію від класу <span style="color: rgb(147, 101, 184);">Person</span>, ми після оголошення <span style="color: rgb(147, 101, 184);">Student</span> використовували двокрапку, ключове слово <span style="color: rgb(147, 101, 184);">public&nbsp;</span>та ім'я класу, від якого ми хочемо успадкувати (<span style="color: rgb(147, 101, 184);">Person</span>). Такий підхід називається відкритим (<span style="color: rgb(147, 101, 184);">public</span>) успадкуванням.</p>
+<p style="text-align: justify;">Спробуймо створити два об'єкти класу <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>(з різними значеннями середнього бала) і виконаємо для нього тестування методу <span style="color: rgb(147, 101, 184);">isSuccessful()</span>.</p>
+<pre style="text-align: justify;" translate="no">#include "Student.h"
+int main()
+{
+    Student firstObj(95.4);
+    if (firstObj.isSuccessful())
+    {
+        cout &lt;&lt; "You are successful student! Great!" &lt;&lt; endl;
+    }
+    else
+    {
+         cout &lt;&lt; "Oh! You should work better...." &lt;&lt; endl;
+    }
+    Student secondObj(65.5);
+    if (secondObj.isSuccessful())
+    {
+        cout &lt;&lt; "You are successful sudent! Great!" &lt;&lt; endl;
+    }
+    else
+    {
+        cout &lt;&lt; "Oh! You should work better...." &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 397px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 412px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/XpVOysNv6OETest81QxLRdx_UKi-ekvb" alt="fdUY_mq21kl5Q6iz3eeGuenRSX5_MBxE" class="fr-dib fr-bordered" style="width: 412px;"><span class="fr-inner">Рисунок 22</span></span></span></span></p>
+<p style="text-align: justify;">Щоб в основній програмі не було дублювання коду, зручніше перенести виведення повідомлення в тіло методу <span style="color: rgb(147, 101, 184);">isSuccessful()</span>. Також було б добре, якби це повідомлення містило звертання до студента на ім'я.</p>
+<p style="text-align: justify;">Спробуємо внести ці доповнення в клас <span style="color: rgb(147, 101, 184);">Student</span>.</p>
+<pre style="text-align: justify;" translate="no">class Student: public Person
+{
+    private:
+        string m_spec;
+        double m_meanScore;
+    public:
+        Student(double meanScore, string spec = "Computer Science") :
+            m_spec(spec),
+            m_meanScore(meanScore)
+        {};
+        bool isSuccessful() const
+        {
+            cout &lt;&lt; "Hello, " &lt;&lt; m_firstName &lt;&lt; endl;
+            if (m_meanScore &gt;= 75)
+            {
+                cout &lt;&lt; "You are successful student! Great!" &lt;&lt; endl;
+                return true;
+            }
+            cout &lt;&lt; "Oh! You should work better...." &lt;&lt; endl;
+            return false;
+        }
+};</pre>
+<p style="text-align: justify;">Однак, під час спроби звернутися до поля батьківського класу <span style="color: rgb(147, 101, 184);">Person&nbsp;</span>у методі дочірнього класу <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>ми отримали помилку:</p>
+<p style="text-align: center;"><span style="width: 674px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/EYKLDk487hCk4hea_4WIT78FhTa3MM9r" alt="EYKLDk487hCk4hea_4WIT78FhTa3MM9r" class="fr-dib fr-bordered" style="width: 674px;"><span class="fr-inner">Рисунок 23</span></span></span></span></p>
+<p style="text-align: justify;">Як бачимо, причина помилки в тому, що змінна-член <span style="color: rgb(147, 101, 184);">m_firstName&nbsp;</span>є закритою (<span style="color: rgb(147, 101, 184);">private</span>), тобто «видимою» тільки в методах класу <span style="color: rgb(147, 101, 184);">Person</span>, а не в методах його дочірніх класів.</p>
+<p style="text-align: justify;">Щоб залишити ідею закритого режиму доступу до полів <span style="color: rgb(147, 101, 184);">m_firstName</span>, <span style="color: rgb(147, 101, 184);">m_lastName</span>, <span style="color: rgb(147, 101, 184);">m_age&nbsp;</span>класу <span style="color: rgb(147, 101, 184);">Person</span>, але водночас надати до них доступ для дочірнього класу, нам потрібно або використати аксесори («сетери» та «гетери»), або докладніше ознайомитися з особливостями специфікатора доступу <span style="color: rgb(147, 101, 184);">protected</span>.</p>
+<h3>3.3. Специфікатор доступу protected</h3>
+<p style="text-align: justify;">Як ми вже знаємо, специфікатори доступу забезпечують такі рівні доступу:</p>
+<ul>
+<li style="text-align: justify;">Змінні-члени із секції <span style="color: rgb(147, 101, 184);">public&nbsp;</span>відкриті для всіх (для методів базового класу і для доступу ззовні через об'єкти базового класу, а також похідного класу).</li>
+<li style="text-align: justify;">До компонентів <span style="color: rgb(147, 101, 184);">private</span> секції доступ мають тільки методи того ж класу, в якому знаходиться ця <span style="color: rgb(147, 101, 184);">private</span>-секція.</li>
+<li style="text-align: justify;">Якщо нам потрібно обмежити доступ до властивостей і методів таким чином, щоб їх було «видно» тільки всередині самого класу або класів, похідних від нього, то нам потрібен рівень доступу <span style="color: rgb(147, 101, 184);">protected</span>.</li>
+</ul>
+<p style="text-align: justify;">Тому в нашому прикладі з базовим класом <span style="color: rgb(147, 101, 184);">Person</span> і похідним від нього класом <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>нам потрібно перенести змінні-члени <span style="color: rgb(147, 101, 184);">m_firstName</span>, <span style="color: rgb(147, 101, 184);">m_lastName</span>, <span style="color: rgb(147, 101, 184);">m_age&nbsp;</span>з <span style="color: rgb(147, 101, 184);">private</span>-секції класу <span style="color: rgb(147, 101, 184);">m_firstName</span>, <span style="color: rgb(147, 101, 184);">m_lastName</span>, <span style="color: rgb(147, 101, 184);">m_age&nbsp;</span>у секцію <span style="color: rgb(147, 101, 184);">protected</span>.</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+class Person
+{
+    protected:
+        string m_firstName;
+        string m_lastName;
+        int m_age;
+    public:
+        Person(string firstName = "", string lastName = "", int age = 0) :
+            m_firstName(firstName),
+            m_lastName(lastName),
+            m_age(age)
+        {}
+        string getInfo() const
+        {
+            string result = = format("Person first name - {}; last name - {}; age - {}. \n", m_firstName, m_lastName, to_string(m_age));
+            return result;
+        }
+        string getGreetings(string msgText = "") const
+        {
+            string result = "I am " + m_firstName;
+            if (!msgText.empty())
+            {
+                result += ". I say: ";
+                result += msgText;
+            }
+            else
+            {
+                result += ". I say nothing.";
+            }
+            return result;
+        }
+};</pre>
+<p style="text-align: justify;">Тепер у методі <span style="color: rgb(147, 101, 184);">isSuccessful()</span> похідного класу <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>звернемося до властивості класу <span style="color: rgb(147, 101, 184);">Personm_firstName</span>:</p>
+<pre style="text-align: justify;" translate="no">#include "Person.h"
+
+class Student: public Person
+{
+    private:
+        string m_spec;
+        double m_meanScore;
+    public:
+        Student(double meanScore, string spec = "Computer Science") :
+            m_spec(spec),
+            m_meanScore(meanScore)
+        {}
+        bool isSuccessful()
+        {
+            cout &lt;&lt; "Hello, " &lt;&lt; m_firstName &lt;&lt; endl;
+            if (m_meanScore &gt;= 75)
+            {
+                cout &lt;&lt; "You are successful student! Great!" &lt;&lt; endl;
+                return true;
+            }
+            cout &lt;&lt; "Oh! You should work better...." &lt;&lt; endl;
+            return false;
+        }
+};</pre>
+<p style="text-align: justify;">Тепер додамо в клас <span style="color: rgb(147, 101, 184);">Student</span> закриту змінну-член <span style="color: rgb(147, 101, 184);">m_scholarship</span> для зберігання розміру стипендії та метод <span style="color: rgb(147, 101, 184);">setScholarship()</span>, що запускає метод <span style="color: rgb(147, 101, 184);">isSuccessful()</span> і збільшує стипендію студента на <span style="color: rgb(147, 101, 184);">500&nbsp;</span>монет, якщо студент виявляється успішним.</p>
+<p style="text-align: justify;">Також внесемо необхідні зміни в конструктор класу <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>&mdash; нехай розмір стипендії для кожного студента буде <span style="color: rgb(147, 101, 184);">100&nbsp;</span>монет.</p>
+<pre style="text-align: justify;" translate="no">#include "Person.h"
+
+class Student: public Person
+{
+    private:
+        string m_spec;
+        double m_meanScore;
+        double m_scholarship;
+    public:
+        Student(double meanScore, string spec = "Computer Science") :
+            m_spec(spec),
+            m_meanScore(meanScore)
+        {
+            m_scholarship = 100.0;
+        };
+        bool isSuccessful()
+        {
+            cout &lt;&lt; "Hello, " &lt;&lt; m_firstName &lt;&lt; endl;
+            if (m_meanScore &gt;= 75)
+            {
+               cout &lt;&lt; "You are successful student! Great!" &lt;&lt; endl;
+               return true;
+            }
+            cout &lt;&lt; "Oh! You should work better...." &lt;&lt; endl;
+            return false;
+        }
+        void setScholarship()
+        {
+            if (isSuccessful())
+            {
+                m_scholarship += 500;
+                cout &lt;&lt; "Congratulations!" &lt;&lt; endl;
+                cout &lt;&lt; "Your scholarship is " &lt;&lt; m_scholarship &lt;&lt; " coins now!" &lt;&lt; endl;
+            }
+            else
+            {
+                cout &lt;&lt; "Sorry, but your scholarship still " &lt;&lt; m_scholarship &lt;&lt; " coins." &lt;&lt; endl;
+            }
+        }
+};</pre>
+<p style="text-align: justify;">Основна програма:</p>
+<pre style="text-align: justify;" translate="no">#include "Student.h"
+
+int main()
+{
+    Student student1(95.4);
+    Student student2(65.5);
+    student1.setScholarship();
+    student2.setScholarship();
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 505px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 522px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/_jsEdwQu2LU6uK_coXr1EEALbF9uwitP" alt="NiTq7p4Qib4iwe302ziQUmNd9JqIT_Cy" class="fr-dib fr-bordered" style="width: 522px;"><span class="fr-inner">Рисунок 24</span></span></span></span></p>
+<p style="text-align: justify;">Якщо ми в тілі основної програми спробуємо через об'єкт похідного класу звернутися до <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>властивості базового класу (наприклад, <span style="color: rgb(147, 101, 184);">student1.m_firstName</span>):</p>
+<pre style="text-align: justify;" translate="no">int main()
+{
+    Student student1(95.4);
+    Student student2(65.5);
+    student1.setScholarship();
+    student2.setScholarship();
+    cout &lt;&lt; student1.m_firstName &lt;&lt; endl;
+}</pre>
+<p style="text-align: justify;">то це призведе до помилки, оскільки <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>компоненти базового класу доступні для похідного тільки всередині методів похідного класу:</p>
+<p style="text-align: center;"><span style="width: 674px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/vzgJR_ZvDMHN71vSWvlgB693jZo9J14E" alt="vzgJR_ZvDMHN71vSWvlgB693jZo9J14E" class="fr-dib" style="width: 676px;"><span class="fr-inner">Рисунок 25</span></span></span></span></p>
+<h3>3.4. Типи успадкувань і специфікатори доступу</h3>
+<p style="text-align: justify;">У попередніх прикладах ми використовували відкритий варіант (<span style="color: rgb(147, 101, 184);">public</span>) успад&shy;кування, яке є найпоширенішим на практиці.</p>
+<p style="text-align: justify;">Можливі значення для статусу успадкування збігаються з уже відомими нам модифікаторами доступу: <span style="color: rgb(147, 101, 184);">public</span>, <span style="color: rgb(147, 101, 184);">private</span>, <span style="color: rgb(147, 101, 184);">protected</span>.</p>
+<pre style="text-align: justify;" translate="no">// відкритий тип успадкування
+class ChildClassName : public ParentClassName
+{
+// опис похідного класу ChildClassName
+}
+// закритий тип успадкування
+class ChildClassName : private ParentClassName
+{
+// опис похідного класу ChildClassName
+}
+// захищений тип успадкування
+class ChildClassName : protected ParentClassName
+{
+// опис похідного класу ChildClassName
+}</pre>
+<p style="text-align: justify;">Отже, ми маємо три варіанти успадкування і знаємо три специфікатори доступу &mdash; загалом дев'ять комбінацій рівня доступу (для відкритого варіанта успадкування в базовому класі можливі <span style="color: rgb(147, 101, 184);">public</span>, <span style="color: rgb(147, 101, 184);">private</span>, <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>специфікатори, так само як і для закритого та захищеного варіантів успадкування).</p>
+<p style="text-align: justify;">Головне призначення цього механізму &mdash; це можливість змінювати у похідному класі рівень доступу до змінної-члена базового класу.</p>
+<p style="text-align: justify;">Як саме змінюється (і чи змінюється) специфікатор доступу для компонентів базового класу залежить від типу успадкування.</p>
+<p style="text-align: justify;">Однак, перш ніж переходити до деталей, потрібно звернути увагу на такі правила (вони знадобляться нам для розуміння взаємозв'язку між типом успадкування і специфікаторами доступу в базовому класі):</p>
+<ul>
+<li style="text-align: justify;">Методи класу завжди мають доступ до власних (неспадкованих) змінних-членів класу незалежно від того, у секції якого специфікатора доступу вони знаходяться.</li>
+<li style="text-align: justify;">Доступ до змінної-члена класу поза методами класу залежить від її специ&shy;фікатора доступу.</li>
+<li style="text-align: justify;">Похідний клас має доступ до успадкованих змінних-членів базового класу залежно від її специфікатора доступу в базовому класі.</li>
+</ul>
+<p style="text-align: justify;">Як уже було зазначено, <span style="color: rgb(147, 101, 184);">public</span>-успадкування найчастіше зустрічається в реальній практиці. У разі використання цього типу успадкування специфікатори доступу базового класу зовсім не змінюються, тобто:</p>
+<ul>
+<li style="text-align: justify;">Успадковані похідним класом <span style="color: rgb(147, 101, 184);">public&nbsp;</span>компоненти мають рівень доступу <span style="color: rgb(147, 101, 184);">public&nbsp;</span>(доступні і всередині похідного класу, і поза ним, тобто через об'єкти похідного класу).</li>
+<li style="text-align: justify;">Успадковані похідним класом <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>змінні-члени залишаються <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>(тобто доступні тільки всередині методів похідного класу).</li>
+<li style="text-align: justify;">private-секція базового класу недоступна для похідного класу.</li>
+</ul>
+<p style="text-align: justify;">Підсумуємо, що відбувається (який можливий рівень доступу) при відкритому (<span style="color: rgb(147, 101, 184);">public</span>) типі успадкування:</p>
+<p style="text-align: center;"><strong>Таблиця 1</strong></p>
+<table>
+<tbody>
+<tr>
+<td style="background-color: rgb(239, 239, 239); width: 21.5389%;">
+<div style="text-align: center;">Специфікатор&nbsp;<br>
+доступу&nbsp;<br>
+в базовому класі</div>
+</td>
+<td style="background-color: rgb(239, 239, 239); width: 33.8488%;">
+<div style="text-align: center;">Специфікатор доступу до&nbsp;<br>
+успадкованих змінних-членів у похідному класі</div>
+</td>
+<td style="background-color: rgb(239, 239, 239); width: 22.531%;">
+<div style="text-align: center;">Доступ у&nbsp;<br>
+методах дочірнього класу</div>
+</td>
+<td style="background-color: rgb(239, 239, 239); width: 22.0234%;">
+<div style="text-align: center;">Доступ через&nbsp;<br>
+об'єкти дочірнього класу</div>
+</td>
+</tr>
+<tr>
+<td style="width: 21.5389%;">private</td>
+<td style="width: 33.8488%;">немає доступу</td>
+<td style="width: 22.531%;">
+<div style="text-align: center;">-</div>
+</td>
+<td style="width: 22.0234%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+<tr>
+<td style="width: 21.5389%;">public</td>
+<td style="width: 33.8488%;">public</td>
+<td style="width: 22.531%;">
+<div style="text-align: center;">+</div>
+</td>
+<td style="width: 22.0234%;">
+<div style="text-align: center;">+</div>
+</td>
+</tr>
+<tr>
+<td style="width: 21.5389%;">protected</td>
+<td style="width: 33.8488%;">protected</td>
+<td style="width: 22.531%;">
+<div style="text-align: center;">+</div>
+</td>
+<td style="width: 22.0234%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Розглянемо перелічені в таблиці ситуації на прикладах.</p>
+<p>«<em>BaseClass.h</em>»:</p>
+<pre style="text-align: justify;" translate="no">class BaseClass
+{
+    private:
+        int privateBase Value;
+    protected:
+        int protectedBase Value;
+    public:
+        int publicBase Value;
+};</pre>
+<p style="text-align: justify;">«<em>DerivedClass.h</em>»:</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+#include "BaseClass.h"
+
+using namespace std;
+
+class DerivedClass1 : public BaseClass
+{
+    public:
+        void OutputBase Value()
+        {
+            cout &lt;&lt; "I have access to publicBaseValue: " &lt;&lt; publicBaseValue &lt;&lt; endl;
+            cout &lt;&lt; "I have access to protectedBaseValue: " &lt;&lt; protectedBaseValue &lt;&lt; endl;
+            cout &lt;&lt; "I don't have access to privateBaseValue: " /*&lt;&lt; privateBaseValue */&lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">Файл основної програми:</p>
+<pre style="text-align: justify;" translate="no">#include "DerivedClass.h"
+
+int main()
+{
+    DerivedClass1 derivedObj1;
+    derivedObj1.OutputBaseValue();
+    cout &lt;&lt; "I also have access to publicBaseValue: " &lt;&lt; derivedObj1.publicBaseValue &lt;&lt; endl;
+    cout &lt;&lt; "I already don't have access to protectedBaseValue: "/* &lt;&lt; derivedObj1.protectedBaseValue*/&lt;&lt; endl;
+    cout &lt;&lt; "I also don't have access to privateBaseValue: "/* &lt;&lt; derivedObj1.privateBaseValue */&lt;&lt; endl;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Закритий (<span style="color: rgb(147, 101, 184);">private</span>) тип успадкування на практиці використовується досить рідко. Однак, він може бути корисний, якщо потрібно закрити доступ до <span style="color: rgb(147, 101, 184);">public</span>-секції батьківського класу через об'єкти дочірнього.</p>
+<p style="text-align: justify;">У такому разі всі змінні-члени батьківського класу будуть успадковані як <span style="color: rgb(147, 101, 184);">private</span>:</p>
+<ul>
+<li style="text-align: justify;"><span style="color: rgb(147, 101, 184);">private</span>-компоненти базового класу залишаються недоступними і для методів батьківського;</li>
+<li style="text-align: justify;">вміст <span style="color: rgb(147, 101, 184);">protected</span>- і <span style="color: rgb(147, 101, 184);">public</span>-секції базового класу стає <span style="color: rgb(147, 101, 184);">private&nbsp;</span>у дочірньому класі, тобто видимий з методів дочірнього класу, але вже не доступний через об'єкти дочірнього класу.</li>
+</ul>
+<p style="text-align: center;"><strong>Таблиця 2</strong></p>
+<table style="border: none; border-collapse: collapse; empty-cells: show; max-width: 100%; margin: 24px calc(0%); width: 100%; border-spacing: 0px; font-size: 14px; font-weight: 400; line-height: 20px; color: rgb(63, 63, 64); font-family: Inter, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">
+<tbody style="border-style: solid; border-color: rgb(222, 222, 222); border-width: 1px;">
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 20.4516%;">
+<div style="text-align: center;">Специфікатор доступу в&nbsp;<br>
+базовому класі</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 36.9668%;">
+<div style="text-align: center;">Специфікатор доступу до&nbsp;<br>
+успадкованих змінних-членів у похідному класі</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 21.3348%;">
+<div style="text-align: center;">Доступ у методах дочірнього класу</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 21.0984%;">
+<div style="text-align: center;">Доступ з об'єктів дочірнього класу</div>
+</td>
+</tr>
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 20.4516%;">private</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 36.9668%;">немає доступу</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 21.3348%;">
+<div style="text-align: center;">-</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 21.0984%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 20.4516%;">public</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 36.9668%;">private<br></td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 21.3348%;">
+<div style="text-align: center;">+</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 21.0984%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 20.4516%;">protected</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 36.9668%;">private<br></td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 21.3348%;">
+<div style="text-align: center;">+</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 21.0984%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: justify;">Отже, закрите успадкування не впливає на рівень доступу дочірнього класу до компонентів базового, а тільки обмежує доступ інших об'єктів до змінних-членів базового класу через дочірній.</p>
+<p style="text-align: justify;">Розглянемо перелічені в таблиці ситуації на прикладах.</p>
+<p>«<em>DerivedClass.h</em>»:</p>
+<pre style="text-align: justify;" translate="no">class DerivedClass2 : private BaseClass
+{
+    public:
+        void OutputBaseValue()
+        {
+            cout &lt;&lt; "I have access to publicBaseValue: " &lt;&lt; publicBaseValue &lt;&lt; endl;
+            cout &lt;&lt; "I have access to protectedBaseValue: " &lt;&lt; protectedBaseValue &lt;&lt; endl;
+            cout &lt;&lt; "I don't have access to privateBaseValue: " /*&lt;&lt; privateBaseValue */ &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">Файл основної програми:</p>
+<pre style="text-align: justify;" translate="no">#include "DerivedClass.h"
+
+int main()
+{
+    DerivedClass2 derivedObj2;
+    derivedObj2.OutputBaseValue();
+    cout &lt;&lt; "I already don't access to publicBaseValue: "/*&lt;&lt; derivedObj1.publicBaseValue*/ &lt;&lt; endl;
+    cout &lt;&lt; "I also don't have access to protectedBaseValue: "/*&lt;&lt; derivedObj1.protectedBaseValue*/ &lt;&lt; endl;
+    cout &lt;&lt; "I also don't have access to privateBaseValue: "/*&lt;&lt; derivedObj1.privateBaseValue */ &lt;&lt; endl;
+    return 0;
+}</pre>
+<p style="text-align: justify;">У разі використанні <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>успадкування секції <span style="color: rgb(147, 101, 184);">public&nbsp;</span>і <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>базового класу стають <span style="color: rgb(147, 101, 184);">protected&nbsp;</span>у похідному класі.</p>
+<p style="text-align: center;"><strong>Таблиця 3</strong></p>
+<table style="border: none; border-collapse: collapse; empty-cells: show; max-width: 100%; margin: 24px calc(0%) 24px calc(1%); width: 99%; border-spacing: 0px; font-size: 14px; font-weight: 400; line-height: 20px; color: rgb(63, 63, 64); font-family: Inter, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">
+<tbody style="border-style: solid; border-color: rgb(222, 222, 222); border-width: 1px;">
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 23.152%; text-align: center;">
+<div style="text-align: center;">Специфікатор&nbsp;<br>
+доступу в&nbsp;<br>
+базовому класі</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 37.9535%; text-align: center;">
+<div style="text-align: center;">Специфікатор доступу до&nbsp;<br>
+успадкованих змінних-членів у похідному класі</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 20.1942%; text-align: center;">
+<div style="text-align: center;">Доступ в методах дочернего класса</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; background-color: rgb(239, 239, 239); width: 18.4493%;">
+<div style="text-align: center;">Доступ з об'єктів дочірнього класу</div>
+</td>
+</tr>
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 23.152%;">
+<div style="text-align: center;">private</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 37.9535%;">
+<div style="text-align: center;">немає доступу</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 20.1942%;">
+<div style="text-align: center;">-</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 18.4493%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 23.152%;">
+<div style="text-align: center;">public</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 37.9535%;">
+<div style="text-align: center;">protected</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 20.1942%;">
+<div style="text-align: center;">+</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 18.4493%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+<tr>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 23.152%;">
+<div style="text-align: center;">protected</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 37.9535%;">
+<div style="text-align: center;">protected</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 20.1942%;">
+<div style="text-align: center;">+</div>
+</td>
+<td style="user-select: text; min-width: 5px; border: 1px solid rgb(222, 222, 222); padding: 6px 12px; width: 18.4493%;">
+<div style="text-align: center;">-</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: justify;">У попередніх прикладах у наших дочірніх класів не було похідних класів. Однак, на практиці можуть зустрічатися ланцюжки успадкувань, наприклад: Базовий клас <span style="color: rgb(147, 101, 184);">А</span> Похідний від <span style="color: rgb(147, 101, 184);">А</span> класу <span style="color: rgb(147, 101, 184);">В</span> Похідний від <span style="color: rgb(147, 101, 184);">В</span> клас <span style="color: rgb(147, 101, 184);">С</span>.</p>
+<p style="text-align: justify;">Ми можемо успадковувати від класу, який сам є похідним від іншого класу.</p>
+<p style="text-align: justify;">І в такій ситуації може виникнути потреба, щоб змінні-члени класу <span style="color: rgb(147, 101, 184);">А</span> були доступні і в методах класу <span style="color: rgb(147, 101, 184);">В</span>, і в методах класу <span style="color: rgb(147, 101, 184);">С</span>, але не через об'єкти класів <span style="color: rgb(147, 101, 184);">В</span> і <span style="color: rgb(147, 101, 184);">С</span>.</p>
+<p style="text-align: justify;">Для реалізації зазначених вимог нам потрібно при створенні класу <span style="color: rgb(147, 101, 184);">В</span> вказати тип успадкування <span style="color: rgb(147, 101, 184);">protected</span>, а ось для класу <span style="color: rgb(147, 101, 184);">С</span> тип успадкування має бути <span style="color: rgb(147, 101, 184);">public&nbsp;</span>(щоб не змінилися специфікатори для змінних-членів, успадкованих від класу <span style="color: rgb(147, 101, 184);">В</span>).</p>
+<p style="text-align: justify;">Розглянемо цю ситуацію на прикладі:</p>
+<pre style="text-align: justify;" translate="no">class A
+{
+    private:
+        int private A;
+    protected:
+        int protected A;
+    public:
+        int public A;
+};
+
+class B :protected A
+{
+    private:
+        int private B;
+    protected:
+        int protected B;
+    public:
+        int public B;
+        void OutputValuesA_fromB()
+        {
+            cout &lt;&lt; "I have access to publicA: " &lt;&lt; publicA &lt;&lt; endl;
+            cout &lt;&lt; "I also have access to protectedA: " &lt;&lt; protectedA &lt;&lt; endl;
+            cout &lt;&lt; "But I don't have access to privateA: " &lt;&lt; /*privateA &lt;&lt; */endl;
+        }
+};
+
+class C :public B
+{
+    public:
+        void OutputValuesA_fromC()
+        {
+            cout &lt;&lt; "I have access to publicA: " &lt;&lt; publicA &lt;&lt; endl;
+            cout &lt;&lt; "I also have access to protectedA: " &lt;&lt; protectedA &lt;&lt; endl;
+            cout &lt;&lt; "But I don't have access to privateA: " &lt;&lt; /*privateA &lt;&lt; */endl;
+        }
+        void OutputValuesB_fromC()
+        {
+            cout &lt;&lt; "I have access to publicB: " &lt;&lt; publicB &lt;&lt; endl;
+            cout &lt;&lt; "I also have access to protectedB: " &lt;&lt; protectedB &lt;&lt; endl;
+            cout &lt;&lt; "But I don't have access to privateB: " &lt;&lt; /*privateB &lt;&lt; */endl;
+        }
+};</pre>
+<p style="text-align: justify;">Клас <span style="color: rgb(147, 101, 184);">В</span> має доступ до змінних-членів <span style="color: rgb(147, 101, 184);">publicA</span>, <span style="color: rgb(147, 101, 184);">protectedA&nbsp;</span>класу <span style="color: rgb(147, 101, 184);">А</span>, але не до <span style="color: rgb(147, 101, 184);">privateA</span>.</p>
+<p style="text-align: justify;">Клас <span style="color: rgb(147, 101, 184);">В</span> має доступ до <span style="color: rgb(147, 101, 184);">publicA</span>, <span style="color: rgb(147, 101, 184);">protectedA</span> класу <span style="color: rgb(147, 101, 184);">А</span> і до <span style="color: rgb(147, 101, 184);">publicВ</span>, <span style="color: rgb(147, 101, 184);">protectedВ</span> класу <span style="color: rgb(147, 101, 184);">В</span>, але не має доступу до <span style="color: rgb(147, 101, 184);">privateA&nbsp;</span>і <span style="color: rgb(147, 101, 184);">privateB</span>.</p>
+<p style="text-align: justify;">Основна програма:</p>
+<pre style="text-align: justify;" translate="no">int main()
+{
+    B objB;
+    objB.OutputValuesA_fromB();
+    cout &lt;&lt; "I already don't have access to publicA: " &lt;&lt; /*objB.publicA &lt;&lt; */ endl;
+    cout &lt;&lt; "I also don't have access to protectedA: "/* &lt;&lt; objB.protectedA*/ &lt;&lt; endl;
+    cout &lt;&lt; "I also don't have access to privateA: "/* &lt;&lt; objB.privateA */ &lt;&lt; endl;
+
+    C objC;
+    objC.OutputValuesA_fromC();
+    objC.OutputValuesB_fromC();
+
+    cout &lt;&lt; "I don't have access to publicA: " &lt;&lt;/*objC.publicA &lt;&lt; */ endl;
+    cout &lt;&lt; "But I have access to publicB: " &lt;&lt; objC.publicB &lt;&lt; endl;
+
+    cout &lt;&lt; "I also don't have access to protectedA: "/* &lt;&lt; objC.protectedA*/ &lt;&lt; endl;
+    cout &lt;&lt; "And I don't have access to protectedB, too: "/* &lt;&lt; objC.protectedB*/ &lt;&lt; endl;
+
+    cout &lt;&lt; "Of course,I don't have access to privateA: "/* &lt;&lt; objC.privateA */ &lt;&lt; endl;
+    cout &lt;&lt; "Of course,I don't have access to privateB: "/* &lt;&lt; objC.privateB */ &lt;&lt; endl;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Оскільки <span style="color: rgb(147, 101, 184);">В</span> успадковує клас <span style="color: rgb(147, 101, 184);">А</span> за допомогою захищеного типу успадкування, то <span style="color: rgb(147, 101, 184);">publicA</span> також стає закритою, тобто недоступною через об'єкт <span style="color: rgb(147, 101, 184);">objB&nbsp;</span>класу <span style="color: rgb(147, 101, 184);">В</span>.</p>
+<p style="text-align: justify;">Через об'єкт <span style="color: rgb(147, 101, 184);">objC&nbsp;</span>класу <span style="color: rgb(147, 101, 184);">С</span> ми не можемо отримати доступ до жодних змінних-членів <span style="color: rgb(147, 101, 184);">А</span>, але відкрита властивість класу <span style="color: rgb(147, 101, 184);">В</span> <span style="color: rgb(147, 101, 184);">publicB&nbsp;</span>нам доступна.</p>
+<h3 style="text-align: left;">3.5. Поведінка конструкторів і деструкторів при одиночному успадкуванні</h3>
+<p style="text-align: justify;">У попередньому прикладі з базовим класом <span style="color: rgb(147, 101, 184);">Person&nbsp;</span>і похідним від нього класом <span style="color: rgb(147, 101, 184);">Student&nbsp;</span>ми зіткнулися з такою проблемою: при створенні об'єкта <span style="color: rgb(147, 101, 184);">firstObj&nbsp;</span>класу Студент (під час виклику його конструктора з параметрами) ми маємо можливість уведення тільки даних студента <span style="color: rgb(147, 101, 184);">m_meanScore&nbsp;</span>(середній бал) та <span style="color: rgb(147, 101, 184);">m_spec&nbsp;</span>(назва спеціальності зі значенням за замовчуванням «<span style="color: rgb(147, 101, 184);">Computer Science</span>»).</p>
+<p>Наприклад, так:</p>
+<pre style="text-align: justify;" translate="no">Student firstObj(95.4);</pre>
+<p style="text-align: justify;">Це призводить до того, що для нашого студента (об'єкта <span style="color: rgb(147, 101, 184);">firstObj</span>) не задано властивостей, успадкованих від базового класу, і, як результат, під час виклику методу <span style="color: rgb(147, 101, 184);">isSuccessful()</span>, у якому є звертання до студента на ім'я, ми бачимо такий результат:</p>
+<p style="text-align: center;"><span style="width: 505px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 512px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/ZnDMQI-jROxIw5s_7nM0UEJ_FaBx_DaD" alt="5i4Z7eH3hDi8FF37wv-MmjnCnrIvUrif" class="fr-dib fr-bordered" style="width: 512px;"><span class="fr-inner">Рисунок 26</span></span></span></span></p>
+<p style="text-align: justify;">Звісно, потрібно виправити цю ситуацію, щоб після привітання «Hello» було виведено ім'я конкретного студента, з яким працює програма.</p>
+<p style="text-align: justify;">Для цього нам потрібно розібратися, у якому порядку викликаються конструктори базового і похідного класів під час створення об'єкта похідного класу. Також нам потрібно вивчити особливості ініціалізації змінних-членів батьківського класу (адже ім'я студента є успадкованим від батьківського класу <span style="color: rgb(147, 101, 184);">Person</span>).</p>
+<p style="text-align: justify;">Спочатку розглянемо порядок подій під час створення об'єктів похідного класу.</p>
+<p style="text-align: justify;">Насамперед, потрібно зазначити, що об'єкт похідного класу складається з «частин»: батьківської (успадкованої від базового класу) і власної (дочірньої частини).</p>
+<p style="text-align: justify;">Однак, у процесі успадкування компонентів батьківського класу в дочірній не відбувається копіювання цих змінних-членів з базового в похідний клас.</p>
+<p style="text-align: justify;">Процес створення об'єктів похідного класу в С++ відбувається поетапно. Спочатку створюється «батьківська» (базова) частина об'єкта похідного класу: викликається конструктор за замовчуванням батьківського класу (для ініціалізації успадкованих змінних-членів). І тільки потім створюється «дочірня» частина (також з використанням конструктора за замовчуванням похідного класу).</p>
+<p style="text-align: justify;">Розглянемо особливості та порядок цих процесів на прикладі:</p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+using namespace std;
+
+class BaseClass
+{
+    public:
+        int m_baseValue;
+        BaseClass(int baseValue = 0) :
+        m_baseValue(baseValue)
+        {
+            cout &lt;&lt; "Base object with value " &lt;&lt; m_baseValue &lt;&lt; " was created" &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">Наш базовий клас <span style="color: rgb(147, 101, 184);">BaseClass&nbsp;</span>має тільки одну властивість <span style="color: rgb(147, 101, 184);">m_baseValue</span>. Поки що ми зробили її відкритою (<span style="color: rgb(147, 101, 184);">public</span>), щоб забезпечити до неї доступ не тільки з методів похідного класу, а й через об'єкти похідного класу (наприклад, <em>об'єктПохідного&shy;Класу.&shy;m_baseValue</em>).</p>
+<p style="text-align: justify;">Також у тіло конструктора було додано виведення інформаційного повідомлення, щоб можна було чітко визначити і відобразити момент його виклику під час створення об'єкта похідного класу.</p>
+<p>Тепер створимо похідний клас <span style="color: rgb(147, 101, 184);">DerivedClass</span>:</p>
+<pre style="text-align: justify;" translate="no">#include "BaseClass.h"
+class DerivedClass :public BaseClass {
+    private:
+        int m_derivedValue;
+    public:
+        DerivedClass(int derivedValue = 100) :
+            m_derivedValue(derivedValue)
+        {
+            cout &lt;&lt; "Derived object with value " &lt;&lt; m_derivedValue &lt;&lt; " was created" &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">У конструктор похідного класу ми також додали виведення інформаційного повідомлення, щоб відобразити момент ініціалізації «дочірньої» частини під час створення об'єкта класу <span style="color: rgb(147, 101, 184);">DerivedClass</span>.</p>
+<p>Основна програма:</p>
+<pre style="text-align: justify;" translate="no">#include "DerivedClass.h"
+
+int main()
+{
+    cout &lt;&lt; "Let's create and initialize parent object:" &lt;&lt; endl;
+    BaseClass baseObj;
+    cout &lt;&lt; endl &lt;&lt; endl;
+    cout &lt;&lt; "Let's create and initialize child object:" &lt;&lt; endl;
+    DerivedClass derivedObj;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 500px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 512px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/zRt9tgpTPbFVNB8_Ne29rMGiY3TXocCX" alt="2EiKS2YMy-2D7fY-N9b78Xz-YaRCQvx3" class="fr-dib fr-bordered" style="width: 512px;"><span class="fr-inner">Рисунок 27</span></span></span></span></p>
+<p style="text-align: justify;">Як бачимо, під час створення дочірнього об'єкта <span style="color: rgb(147, 101, 184);">derivedObj</span> спочатку дійсно створюється «батьківська» частина, тобто частина, успадкована від класу <span style="color: rgb(147, 101, 184);">BaseClass</span>.</p>
+<p style="text-align: justify;">Такий механізм початкової ініціалізації базового класу гарантує, що його компоненти будуть створені і готові на момент їх використання похідним класом.</p>
+<p style="text-align: justify;"><span style="color: rgb(63, 63, 64); font-family: Inter, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Тепер, п</span>ознайомившись з порядком подій при створенні об'єкта похідного класу, ми можемо більш детально розглянути особливості роботи конструкторів базового і похідного класів та дізнатися, що відбувається під час ініціалізації об'єкта дочірнього класу.</p>
+<p style="text-align: justify;">Розглянемо покроково поведінку конструктора звичайного (не похідного) класу. Під час ініціалізації об'єкта <span style="color: rgb(147, 101, 184);">baseObj</span> базового класу <span style="color: rgb(147, 101, 184);">BaseClass</span> виконуються такі кроки:</p>
+<ol>
+<li style="text-align: justify;">Виділяється пам'ять під об'єкт <span style="color: rgb(147, 101, 184);">baseObj</span>.</li>
+<li style="text-align: justify;">Викликається конструктор класу <span style="color: rgb(147, 101, 184);">BaseClass</span> (у нашому прикладі конструктор з параметрами є і конструктором за замовчуванням також).</li>
+<li style="text-align: justify;">Список ініціалізації конструктора ініціалізує змінну <span style="color: rgb(147, 101, 184);">m_baseValue</span>.</li>
+<li style="text-align: justify;">Виконується тіло конструктора (ми бачимо в консолі інформаційне повідомлення про створення об'єкта).</li>
+<li style="text-align: justify;">Програма повертається назад у точку виклику конструктора класу <span style="color: rgb(147, 101, 184);">BaseClass</span>.</li>
+</ol>
+<p style="text-align: justify;">З об'єктами похідних класів ситуація дещо складніша. Під час створення об'єкта <span style="color: rgb(147, 101, 184);">derivedObj</span> дочірнього класу <span style="color: rgb(147, 101, 184);">DerivedClass</span> виконуються такі кроки:</p>
+<ol>
+<li style="text-align: justify;">Спочатку виділяється обсяг пам'яті для об'єкта <span style="color: rgb(147, 101, 184);">derivedObj</span>, достатній для зберігання «батьківської» і «дочірньої» частин об'єкта похідного класу.</li>
+<li style="text-align: justify;">Виконується виклик відповідного конструктора класу <span style="color: rgb(147, 101, 184);">DerivedClass</span> (за замовчуванням або з параметрами, залежно від того, як саме створюється об'єкт; у нашому прикладі конструктор з параметрами є і конструктором за замовчуванням також).</li>
+<li style="text-align: justify;">Створюється об'єкт базового класу <span style="color: rgb(147, 101, 184);">BaseClass</span> з використанням конструктора класу <span style="color: rgb(147, 101, 184);">BaseClass</span> (тобто «батьківська» частина дочірнього об'єкта створюється конструктором за замовчуванням базового класу).</li>
+<li style="text-align: justify;">Виконується ініціалізація змінних членів похідного класу <span style="color: rgb(147, 101, 184);">DerivedClass</span> через список ініціалізації.</li>
+<li style="text-align: justify;">Виконується тіло конструктора похідного класу <span style="color: rgb(147, 101, 184);">DerivedClass</span>.</li>
+<li style="text-align: justify;">Програма повертається назад у точку виклику конструктора класу <span style="color: rgb(147, 101, 184);">Derived&shy;Class</span>.</li>
+</ol>
+<p style="text-align: justify;">Однак, ми все ще не вирішили проблему ініціалізації компонентів «батьківської» (успадкованої) частини <span style="color: rgb(63, 63, 64); font-family: Inter, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">в нашому дочірньому класі.</span></p>
+<p style="text-align: justify;">Припустимо, що нам не підходить задане за замовчуванням батьківським класом значення успадкованої властивості. Наприклад, для нашого об'єкта <span style="color: rgb(147, 101, 184);">derivedObj&nbsp;</span>властивість <span style="color: rgb(147, 101, 184);">m_baseValue&nbsp;</span>повинна мати значення <span style="color: rgb(147, 101, 184);">1000</span>, а не <span style="color: rgb(147, 101, 184);">0</span>.</p>
+<p style="text-align: justify;">Тут слід оразу ж зазначити, що в мові програмування C++ похідним класам заборонено в списку ініціалізації свого конструктора ініціалізувати успадковані змінні-члени базового класу, тобто така спроба (додавання ініціалізації властивості <span style="color: rgb(147, 101, 184);">m_baseValue</span> в список ініціалізації конструктора класу <span style="color: rgb(147, 101, 184);">DerivedClass</span>):</p>
+<pre style="text-align: justify;" translate="no">class DerivedClass :public BaseClass {
+    private:
+        int m_derivedValue;
+    public:
+        DerivedClass(int derivedValue = 100, int baseValue=1000) :
+            m_derivedValue(derivedValue), m_baseValue(baseValue)
+        {
+            cout &lt;&lt; "Derived object with value " &lt;&lt; m_derivedValue &lt;&lt; " was created" &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">викличе помилку:</p>
+<p style="text-align: center;"><span style="width: 674px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 674px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/tflOHKbtKyP5ytMPjCYHY7BfS7O7Tm8y" alt="tflOHKbtKyP5ytMPjCYHY7BfS7O7Tm8y" class="fr-dib fr-bordered" style="width: 674px;"><span class="fr-inner">Рисунок 28</span></span></span></span></p>
+<p style="text-align: justify;">Однак, ми можемо задати значення (або змінити наявне) успадкованої змінної в тілі конструктора дочірнього класу:</p>
+<pre style="text-align: justify;" translate="no">class DerivedClass :public BaseClass {
+    private:
+        int m_derivedValue;
+    public:
+        DerivedClass(int derivedValue = 100) :
+            m_derivedValue(derivedValue)
+        {
+            cout &lt;&lt; "Derived object with value " &lt;&lt; m_derivedValue &lt;&lt; " was created" &lt;&lt; endl;
+            m_baseValue = 1000;
+        }
+};
+
+int main()
+{
+    cout &lt;&lt; "Let's create and initialize parent object:" &lt;&lt; endl;
+    BaseClass baseObj;
+    cout &lt;&lt; endl &lt;&lt; endl;
+    cout &lt;&lt; "Let's create and initialize child object:" &lt;&lt; endl;
+    DerivedClass derivedObj;
+    cout &lt;&lt; "Base object value now is " &lt;&lt; derivedObj.m_baseValue &lt;&lt; endl;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Такий підхід дійсно спрацює в цьому випадку:</p>
+<p style="text-align: center;"><span style="width: 488px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 512px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/BmQoOXH-ZRSkME7CkeVoI1RuSqfOXTr9" alt="N9W2pUc0L0Xz-NIILw958orrp4BBDkzt" class="fr-dib fr-bordered" style="width: 512px;"><span class="fr-inner">Рисунок 29</span></span></span></span></p>
+<p style="text-align: justify;">Проте, таке рішення не є вдалим у ситуації, коли <span style="color: rgb(147, 101, 184);">m_baseValue</span> буде константою або посиланням, які повинні бути ініціалізовані в списку ініціалізації конструктора базового класу.</p>
+<p style="text-align: justify;"><span style="color: rgb(63, 63, 64); font-family: Inter, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">За такого підходу</span> операцію присвоєння значення <span style="color: rgb(147, 101, 184);">baseValue</span> програма виконуватиме двічі: спочатку в конструкторі базового класу, а потім у тілі конструктора дочірнього класу. При цьому перша операція присвоєння абсолютно безглузда, тому що початкове значення відразу ж перевизначається на наступному кроці конструктором <span style="color: rgb(147, 101, 184);">DerivedClass</span> і фактично жодного разу не буде використано.</p>
+<p style="text-align: justify;">Поміркуємо, як можна виправити цю ситуацію.</p>
+<p style="text-align: justify;">Ми пам'ятаємо, що під час створення об'єкта похідного класу спочатку (для формування «батьківської» частини) викликаєся конструктор за замовчуванням базового класу. Однак, мова програмування С++ також надає нам змогу викликати замість конструктора за замовчуванням конструктор з параметрами базового класу. Саме з допомогою нього ми зможемо ініціалізувати успадковані (батьківські) властивості під час створення об'єкта дочірнього класу.</p>
+<p style="text-align: justify;">Для цього нам необхідно додати виклик конструктора з параметрами батьківського класу в списку ініціалізації конструктора дочірнього класу:</p>
+<pre style="text-align: justify;" translate="no">#include "BaseClass.h"
+class DerivedClass :public BaseClass {
+    private:
+        int m_derivedValue;
+    public:
+        DerivedClass(int derivedValue = 100) :
+            m_derivedValue(derivedValue),
+            BaseClass(1000)
+        {
+            cout &lt;&lt; "Derived object with own value " &lt;&lt; m_derivedValue &lt;&lt; endl;
+            cout &lt;&lt; "And base value " &lt;&lt; m_baseValue &lt;&lt; " was created" &lt;&lt; endl;
+        }
+};
+
+int main()
+{
+    cout &lt;&lt; "Let's create and initialize parent object:" &lt;&lt; endl;
+    BaseClass baseObj;
+    cout &lt;&lt; endl &lt;&lt; endl;
+    cout &lt;&lt; "Let's create and initialize child object:" &lt;&lt; endl;
+    DerivedClass derivedObj;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 483px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 483px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/vJ78-rF0ocdeF_jX2QaXj6wUqnJK8lOT" alt="vJ78-rF0ocdeF_jX2QaXj6wUqnJK8lOT" class="fr-dib fr-bordered" style="width: 483px;"><span class="fr-inner">Рисунок 30</span></span></span></span></p>
+<p style="text-align: justify;">Конструктор з параметрами батьківського класу <span style="color: rgb(147, 101, 184);">BaseClass</span> було використано для ініціалізації «батьківської» частини &mdash; змінної-члена <span style="color: rgb(147, 101, 184);">m_baseValue</span> значенням <span style="color: rgb(147, 101, 184);">1000</span>, а конструктор дочірнього класу <span style="color: rgb(147, 101, 184);">DerivedClass</span> виконав ініціалізацію «дочірньої» частини об'єкта <span style="color: rgb(147, 101, 184);">derivedObj</span> &mdash; змінної-члена <span style="color: rgb(147, 101, 184);">m_derivedValue</span> значенням <span style="color: rgb(147, 101, 184);">100</span>.</p>
+<p style="text-align: justify;">Особливості поведінки деструкторів батьківського і дочірнього класів під час видалення об'єкта похідного класу повністю протилежні порядку викликів конструкторів. Спочатку викликається деструктор дочірнього класу, а після нього &mdash; деструктор батьківського класу.</p>
+<p style="text-align: justify;">Додамо в наші класи <span style="color: rgb(147, 101, 184);">DerivedClass</span> і <span style="color: rgb(147, 101, 184);">BaseClass</span> деструктори і забезпечимо їх виведенням інформаційного повідомлення, щоб продемонструвати зазначений порядок їхніх викликів:</p>
+<pre style="text-align: justify;" translate="no">class BaseClass
+{
+    public:
+        int m_baseValue;
+        BaseClass(int baseValue = 0) :
+            m_baseValue(baseValue)
+        {
+            cout &lt;&lt; "Base object with value " &lt;&lt; m_baseValue &lt;&lt; " was created" &lt;&lt; endl;
+        }
+        ~BaseClass()
+        {
+            cout &lt;&lt; "Base object was deleted..." &lt;&lt; endl;
+        }
+};
+
+class DerivedClass :public BaseClass {
+    private:
+        int m_derivedValue;
+    public:
+        DerivedClass(int derivedValue = 100) :
+            m_derivedValue(derivedValue),
+            BaseClass(1000)
+        {
+            cout &lt;&lt; "Derived object with own value " &lt;&lt; m_derivedValue &lt;&lt; endl;
+            cout &lt;&lt; "And base value " &lt;&lt; m_baseValue &lt;&lt; " was created" &lt;&lt; endl;
+        }
+        ~DerivedClass()
+        {
+            cout &lt;&lt; "Derived object was deleted..." &lt;&lt; endl;
+        }
+};
+
+int main()
+{
+    cout &lt;&lt; "Let's create and initialize child object:" &lt;&lt; endl;
+    DerivedClass derivedObj;
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 472px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 462px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/MQICvIsHwNVPciUYXjiVw4LFSY6QKep1" alt="MQICvIsHwNVPciUYXjiVw4LFSY6QKep1" class="fr-dib fr-bordered" style="width: 462px;"><span class="fr-inner">Рисунок 31</span></span></span></span></p>
+<h3 style="text-align: justify;">3.6. Приклади використання одиночного успадкування</h3>
+<p style="text-align: justify;">Розглянемо кілька практичних прикладів, в яких використовується одиночне успадкування. Припустимо, що нам потрібно реалізувати клас для представлення точки у двовимірному просторі (наприклад, піксель зображення). У точки є дві координати і метод для її відображення на екрані (ми спростимо цю дію до виведення повідомлення, в якій позиції екрана знаходиться зараз точка). Однак, у кожного пікселя на зображенні, крім його координат, ще є і колір. Піксель зображення також має відображатися на екрані, але вже у своєму кольорі.</p>
+<p style="text-align: justify;">Отже, у цьому завданні нам потрібно створити базовий клас Точка і похідний від нього клас Піксель. При цьому функціональність методу, що реалізує відображення точки, згідно з її координатами, необхідно буде розширити в класі Піксель, тому що піксель відображається у своєму кольорі.</p>
+<p>Створимо спочатку базовий клас <span style="color: rgb(147, 101, 184);">Point</span> (<em>Точка</em>):</p>
+<p><em>«Point.h»:</em></p>
+<pre style="text-align: justify;" translate="no">#include &lt;iostream&gt;
+using namespace std;
+
+class Point {
+    protected:
+        int m_x;
+        int m_y;
+    public:
+        Point(int x=0, int y=0) : m_x(x), m_y(y){}
+        void display() const
+        {
+            cout &lt;&lt; "Point in the position: x = " &lt;&lt; m_x &lt;&lt; ";\n";
+            cout &lt;&lt; "y = " &lt;&lt; m_y &lt;&lt; " now." &lt;&lt; endl;
+        }
+        void change(int x, int y)
+        {
+            if ((x == m_x) &amp;&amp; (y == m_y))
+            {
+                cout &lt;&lt; "Same position!" &lt;&lt; endl;
+            }
+            else
+            {
+                m_x = x;
+                m_y = y;
+                display();
+            }
+        }
+};</pre>
+<p style="text-align: justify;">Координати точки нам знадобляться в похідному класі, тому ми використовували модифікатор доступу <span style="color: rgb(147, 101, 184);">protected</span>. Також передбачено метод <span style="color: rgb(147, 101, 184);">change()</span> для зміни координат точки (переміщення її в іншу позицію на екрані).</p>
+<p style="text-align: justify;">Виконаємо тестування реалізованого базового класу в основній програмі.</p>
+<pre style="text-align: justify;" translate="no">#include "Point.h"
+
+int main()
+{
+    cout &lt;&lt; "First point:" &lt;&lt; endl;
+    Point firstPoint;
+    firstPoint.display();
+    firstPoint.change(100, 200);
+    cout &lt;&lt; endl;
+    cout &lt;&lt; "Second point:" &lt;&lt; endl;
+    Point secondPoint(10, 10);
+    secondPoint.display();
+    secondPoint.change(10, 20);
+    secondPoint.change(10, 20);
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: justify;"><span style="width: 506px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 506px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/D5dM0q6cnrSmxgh79tF508q75kIR4p1W" alt="D5dM0q6cnrSmxgh79tF508q75kIR4p1W" class="fr-dib fr-bordered" style="width: 506px;"><span class="fr-inner">Рисунок 32</span></span></span></span></p>
+<p style="text-align: justify;">Тепер створимо клас Піксель (<span style="color: rgb(147, 101, 184);">Pixel</span>), похідний від класу Точка (<span style="color: rgb(147, 101, 184);">Point</span>).</p>
+<p style="text-align: justify;">«<em>Pixel.h</em>»:</p>
+<pre style="text-align: justify;" translate="no">#include "Point.h"
+#include "string.h"
+
+class Pixel : public Point
+{
+    private:
+        string m_color;
+    public:
+        Pixel(string color = "black", int x=0, int y=0):
+            Point(x, y),
+            m_color(color)
+        {}
+        void display() const
+        {
+            cout &lt;&lt; "Pixel with color " &lt;&lt; m_color &lt;&lt; " in the position: x = " &lt;&lt; m_x &lt;&lt;"; y = "&lt;&lt; m_y &lt;&lt;" now."&lt;&lt; endl;
+        }
+        void changeColor(string color)
+        {
+            if (color == m_color)
+            {
+                cout &lt;&lt; "Same color!" &lt;&lt; endl;
+            }
+            else
+            {
+                m_color = color;
+                display();
+            }
+        }
+};</pre>
+<p style="text-align: justify;">Метод <span style="color: rgb(147, 101, 184);">display()</span>, що реалізує відображення точки в базовому класі <span style="color: rgb(147, 101, 184);">Point</span>, був перевизначений у похідному класі <span style="color: rgb(147, 101, 184);">Pixel</span>, тому що змінився текст інформаційного повідомлення «Pixel with color...» і піксель відображається у своєму кольорі.</p>
+<p style="text-align: justify;">У тілі перевизначеного методу <span style="color: rgb(147, 101, 184);">display()</span> похідного класу <span style="color: rgb(147, 101, 184);">Point</span> ми можемо звертатися до координат точки (<span style="color: rgb(147, 101, 184);">m_x</span>, <span style="color: rgb(147, 101, 184);">m_y</span>), які є <span style="color: rgb(147, 101, 184);">protected</span> змінними-членами базового класу <span style="color: rgb(147, 101, 184);">Point</span>.</p>
+<p>Основна програма:</p>
+<pre style="text-align: justify;" translate="no">#include "Pixel.h"
+
+int main()
+{
+    cout &lt;&lt; "First point:" &lt;&lt; endl;
+    Point firstPoint;
+    firstPoint.display();
+    firstPoint.change(100, 200);
+    cout &lt;&lt; endl;
+    cout &lt;&lt; "Second point:" &lt;&lt; endl;
+    Point secondPoint(10, 10);
+    secondPoint.display();
+    secondPoint.change(10, 20);
+    secondPoint.change(10, 20);
+    cout &lt;&lt; endl;
+    cout &lt;&lt; endl;
+    cout &lt;&lt; "First pixel:" &lt;&lt; endl;
+    Pixel firstPixel;
+    firstPixel.display();
+    firstPixel.change(100, 200);
+    firstPixel.changeColor("black");
+    cout &lt;&lt; endl;
+    cout &lt;&lt; "Second pixel:" &lt;&lt; endl;
+    Pixel secondPixel("red", 10, 10);
+    secondPixel.display();
+    secondPixel.changeColor("blue");
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 666px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 666px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/oBu2a516zhraRPtYuL2cx3TjxjzxUFkt" alt="oBu2a516zhraRPtYuL2cx3TjxjzxUFkt" class="fr-dib fr-bordered" style="width: 666px;"><span class="fr-inner">Рисунок 33</span></span></span></span></p>
+<p style="text-align: justify;">Розглянемо ще один приклад реалізації одиночного успадкування. Припустимо, що нам потрібно реалізувати такий елемент інтерфейсу як Кнопка. При цьому наш застосунок буде використовувати кнопки з написом і кнопки із зображенням.</p>
+<p style="text-align: justify;">У цій ситуації зручніше спочатку створити базовий клас <span style="color: rgb(147, 101, 184);">Button</span> (<em>Кнопка</em>), у якого будуть тільки властивості: координати верхнього лівого кута, ширина, висота, колір фону і метод для відображення кнопки в заданій позиції на екрані. Далі на його основі створимо таку ієрархію похідних класів <span style="color: rgb(147, 101, 184);">ImgButton</span> (<em>Кнопка_з_Зображенням</em>) і <span style="color: rgb(147, 101, 184);">TxtButton</span> (<em>Кнопка_з_Надписом</em>):</p>
+<p style="text-align: center;"><span style="width: 544px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 449px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/7R1liC37hL3duVh2fqT8P4ejqqvbYYFZ" alt="7R1liC37hL3duVh2fqT8P4ejqqvbYYFZ" class="fr-dib fr-bordered" style="width: 449px;"><span class="fr-inner">Рисунок 34</span></span></span></span></p>
+<p style="text-align: justify;">У похідного класу <span style="color: rgb(147, 101, 184);">ImgButton</span> будуть такі власні властивості як ресурс зображення (ім'я файлу зображення), ширина і висота зображення. Також нам необхідно перевизначити метод <span style="color: rgb(147, 101, 184);">draw()</span>, тому що крім відображення самої кнопки (для цього ми в тілі дочірнього методу викличемо батьківський), нам потрібно відобразити на ній зображення.</p>
+<p style="text-align: justify;">Похідний клас <span style="color: rgb(147, 101, 184);">TxtButton</span> також матиме власну властивість: текст напису на кнопці і перевизначений метод <span style="color: rgb(147, 101, 184);">draw()</span> для відображення тексту напису.</p>
+<p style="text-align: justify;">Створимо базовий клас <span style="color: rgb(147, 101, 184);">Button</span>.</p>
+<p><em>«Button.h»</em>:</p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Button
+{
+    protected:
+        int m_x;
+        int m_y;
+        int m_width;
+        int m_height;
+        string m_bgColor;
+    public:
+        Button(int x=0, int y=0, int width=50, int height=20, string bgColor= "grey"):
+            m_x(x),
+            m_y(y),
+            m_width(width),
+            m_height(height),
+            m_bgColor(bgColor)
+        {}
+        void draw() const
+        {
+            cout &lt;&lt; "Btn is drawn" &lt;&lt; endl;
+            cout &lt;&lt; "Top left (" &lt;&lt; m_x &lt;&lt; ", " &lt;&lt; m_y &lt;&lt; ")" &lt;&lt; endl;
+            cout &lt;&lt; "Bottom right (" &lt;&lt; m_x+m_width &lt;&lt; ", " &lt;&lt; m_y+m_height &lt;&lt; ")" &lt;&lt; endl;
+            cout &lt;&lt; "bg color: " &lt;&lt; m_bgColor &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">Тепер в основній програмі створимо дві прості кнопки:</p>
+<pre style="text-align: left;" translate="no">#include "Button.h"
+
+int main()
+{
+    cout &lt;&lt; "First simple button:" &lt;&lt; endl;
+    Button firstBtn;
+    firstBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "Second simple button:" &lt;&lt; endl;
+    Button secondBtn(10, 10, 100, 30, "red");
+    secondBtn.draw();
+    cout &lt;&lt; endl;
+
+    return 0;
+}</pre>
+<p style="text-align: justify;">Як ми бачимо, для створення першої простої кнопки було використано конструктор за замовчуванням, а для другої &mdash; конструктор із параметрами:</p>
+<p style="text-align: center;"><span style="width: 305px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 305px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/ZH7JZsvnRGKSWS5NgtpMK7kXRrZMjoW_" alt="ZH7JZsvnRGKSWS5NgtpMK7kXRrZMjoW_" class="fr-dib fr-bordered" style="width: 305px;"><span class="fr-inner">Рисунок 35</span></span></span></span></p>
+<p style="text-align: justify;">Тепер створимо похідний клас <span style="color: rgb(147, 101, 184);">ImgButton&nbsp;</span>(<em>Кнопка_з_Зображенням</em>).</p>
+<p style="text-align: justify;">«<em>ImgButton.h</em>»:</p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include "Button.h"
+
+class ImgButton :public Button
+{
+    private:
+        string m_imgSrc;
+        int m_imgHeight;
+        int m_imgWidth;
+    public:
+        ImgButton(string imgSrc, int imgHeight=10, int imgWidth=10):
+            m_imgSrc(imgSrc),
+            m_imgHeight(imgHeight),
+            m_imgWidth(imgWidth)
+        {
+            if (img Height &gt; m_height)
+            {
+                m_height = img Height + 5;
+            }
+            if (imgWidth &gt; m_width)
+            {
+                 m_width = imgWidth + 5;
+            }
+        }
+        void draw() const
+        {
+            Button::draw();
+            cout &lt;&lt; "With image " &lt;&lt; m_imgSrc &lt;&lt; endl;
+            cout &lt;&lt; "Image size: " &lt;&lt; m_imgHeight &lt;&lt; " x " &lt;&lt; m_imgWidth &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">У тіло основної програми додамо створення двох кнопок із зображенням. У другої кнопки розміри зображення будуть більшими за розмір кнопки (перевіримо, як зображення «розтягне» кнопку під власні розміри під час роботи конструктора класу <span style="color: rgb(147, 101, 184);">ImgButton</span>):</p>
+<pre style="text-align: justify;" translate="no">#include "ImgButton.h"
+
+int main()
+{
+    cout &lt;&lt; "First simple button:" &lt;&lt; endl;
+    Button firstBtn;
+    firstBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "Second simple button:" &lt;&lt; endl;
+    Button secondBtn(10, 10, 100, 30, "red");
+    secondBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "First button with image:" &lt;&lt; endl;
+    ImgButton firstImgBtn("myImg.gif");
+    firstImgBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "Second button with big image:" &lt;&lt; endl;
+    ImgButton secondImgBtn("myBigImg.gif", 200, 200);
+    secondImgBtn.draw();
+    cout &lt;&lt; endl;
+
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 352px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 352px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/E-JwwEhB7PrSIdvS7S4pjY7s6c8tOPK8" alt="E-JwwEhB7PrSIdvS7S4pjY7s6c8tOPK8" class="fr-dib fr-bordered" style="width: 352px;"><span class="fr-inner">Рисунок 36</span></span></span></span></p>
+<p style="text-align: justify;">Як бачимо, розміри другої кнопки дійсно «підлаштувалися» під розміри великого зображення.</p>
+<p style="text-align: justify;">Тепер створимо похідний клас Кнопка_з_Надписом (<span style="color: rgb(147, 101, 184);">TxtButton</span>).</p>
+<p style="text-align: justify;">«<em>TxtButton.h</em>»:</p>
+<pre style="text-align: justify;" translate="no">#pragma once
+#include "Button.h"
+
+class TxtButton :public Button
+{
+    private:
+        string m_txt;
+    public:
+        TxtButton(string txt) :m_txt(txt) {}
+        void draw() const
+        {
+            Button::draw();
+            cout &lt;&lt; "With text " &lt;&lt; m_txt &lt;&lt; endl;
+        }
+};</pre>
+<p style="text-align: justify;">Додамо в нашу основну програму кнопку з написом «<em>Click me!»</em>:</p>
+<pre style="text-align: justify;" translate="no">#include "ImgButton.h"
+#include "TxtButton.h"
+
+int main()
+{
+    cout &lt;&lt; "First simple button:" &lt;&lt; endl;
+    Button firstBtn;
+    firstBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "Second simple button:" &lt;&lt; endl;
+    Button secondBtn(10, 10, 100, 30, "red");
+    secondBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "First button with image:" &lt;&lt; endl;
+    ImgButton firstImgBtn("myImg.gif");
+    firstImgBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "Second button with big image:" &lt;&lt; endl;
+    ImgButton secondImgBtn("myBigImg.gif", 200, 200);
+    secondImgBtn.draw();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "Button with text:" &lt;&lt; endl;
+    TxtButton txtBtn("Click me!");
+    txtBtn.draw();
+    cout &lt;&lt; endl;
+
+    return 0;
+}</pre>
+<p style="text-align: justify;">Результат:</p>
+<p style="text-align: center;"><span style="width: 348px;"><span class="fr-img-caption fr-dib fr-bordered" style="width: 348px;"><span class="fr-img-wrap"><img src="https://fsx1.itstep.org/api/v1/files/RvwIWtFavBezhySL9HHop5zceM_T51sL" alt="RvwIWtFavBezhySL9HHop5zceM_T51sL" class="fr-dib fr-bordered" style="width: 348px;"><span class="fr-inner">Рисунок 37</span></span></span></span></p>
+<p><br></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="copyright">
+<p>© Анна Єгошина</p>
+<p>© STEP IT Academy, <a href="https://itstep.org" target="_blank">itstep.org</a></p>
+<p>
+Усі права на фото-, аудіо- і відеотвори, що охороняються авторським
+правом і фрагменти яких використані в матеріалі, належать їх законним
+власникам. Фрагменти творів використовуються в ілюстративних цілях
+в обсязі, виправданому поставленим завданням, у рамках учбового
+процесу і в учбових цілях, відповідно до законодавства про вільне використання
+твору без згоди його автора (або іншої особи, яка має авторське
+право на цей твір). Обсяг і спосіб цитованих творів відповідає прийнятим
+нормам, не завдає збитку нормальному використанню об’єктів авторського
+права і не обмежує законні інтереси автора і правовласників.
+Цитовані фрагменти творів на момент використання не можуть бути
+замінені альтернативними аналогами, що не охороняються авторським
+правом, і відповідають критеріям добросовісного використання і чесного
+використання.
+Усі права захищені. Повне або часткове копіювання матеріалів заборонене.
+Узгодження використання творів або їх фрагментів здійснюється
+з авторами і правовласниками. Погоджене використання матеріалів
+можливе тільки якщо вказано джерело.
+Відповідальність за несанкціоноване копіювання і комерційне використання
+матеріалів визначається чинним законодавством.
+</p>
+</div>
+</div>
+</main>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://materials.itstep.org/js/script.js?t=1692990999"></script>
+</body>
+</html>
