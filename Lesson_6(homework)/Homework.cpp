@@ -54,13 +54,12 @@ int main()
 	double length_vector = vector_AB.Get_Length_Vector();
 	cout << "Length vector = " << length_vector << endl;*/
 
-	double side_length = 3.4;
+	/*double side_length = -3.4;
 	double side_width = 4.3;
 
 	Area_Rectangle area_rectangle_1(side_length, side_width);
 	double result = area_rectangle_1.Get_Area_Rectangle();
-	result<=0 ? cout<<"Error!\n" : cout << "Area rectangle = " << result << endl;
-
+	result<=0 ? cout<<"Error!\n" : cout << "Area rectangle = " << result << endl;*/
 
 	return 0;
 }
